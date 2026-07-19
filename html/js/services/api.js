@@ -9,11 +9,9 @@ const URL_BACKEND_LOCAL = "http://localhost:3000";
 
 /*
  * Endereço do backend em produção.
- *
- * Quando publicarmos no Railway ou Render,
- * basta trocar esta URL.
  */
-const URL_BACKEND_PRODUCAO = "https://SEU_BACKEND_AQUI.com";
+const URL_BACKEND_PRODUCAO =
+    "https://meu-negocio-hinode-production.up.railway.app";
 
 /*
  * Detecta automaticamente se está rodando localmente
