@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Vendas - Meu Negócio Hinode</title>
+
+    <link
+        rel="stylesheet"
+        href="css/venda.css"
+    >
+</head>
+
+<body>
+
+<main class="container">
+
+    <header class="topo">
+        <h1>Meu Negócio Hinode</h1>
+
+        <a
+            href="index.html"
+            class="botao-voltar"
+        >
+            Voltar ao Menu
+        </a>
+    </header>
+
+    <section class="card">
+
+        <h2>REGISTRAR VENDA</h2>
+
+        <!-- CLIENTE -->
+
+        <label for="cliente">Cliente</label>
+
+        <div class="linha-busca">
+
+            <input
+                type="text"
+                id="cliente"
+                placeholder="Cliente selecionado"
+                readonly
+            >
+
+            <button
+                type="button"
+                id="btn-buscar-cliente"
+            >
+                Buscar Cliente
+            </button>
+
+        </div>
+
+        <!-- PRODUTO -->
+
+        <label for="produto">Produto</label>
+
+        <div class="linha-busca">
+
+            <input
+                type="text"
+                id="produto"
+                placeholder="Produto selecionado"
+                readonly
+            >
+
+            <button
+                type="button"
+                id="btn-buscar-produto"
+            >
+                Buscar Produto
+            </button>
+
+        </div>
+
+        <!-- QUANTIDADE -->
+
+        <div class="linha-quantidade">
+
+            <div>
+                <label for="quantidade">
+                    Quantidade
+                </label>
+
+                <input
+                    type="number"
+                    id="quantidade"
+                    min="1"
+                    step="1"
+                    placeholder="Ex: 1"
+                >
+            </div>
+
+            <button
+                type="button"
+                id="btn-adicionar-produto"
+            >
+                Adicionar Produto
+            </button>
+
+        </div>
+
+        <!-- ITENS -->
+
+        <div
+            id="lista-itens"
+            class="lista-itens"
+        ></div>
+
+        <h3 id="total-venda">
+            Total da venda: R$ 0,00
+        </h3>
+
+        <!-- DESCONTO -->
+
+        <div class="linha-dupla">
+
+            <div>
+                <label for="desconto">
+                    Desconto
+                </label>
+
+                <input
+                    type="number"
+                    id="desconto"
+                    min="0"
+                    step="0.01"
+                    placeholder="Ex: 10"
+                >
+            </div>
+
+            <div>
+                <label for="tipo-desconto">
+                    Tipo de desconto
+                </label>
+
+                <select id="tipo-desconto">
+
+                    <option value="valor">
+                        Valor em R$
+                    </option>
+
+                    <option value="porcentagem">
+                        Porcentagem %
+                    </option>
+
+                </select>
+            </div>
+
+        </div>
+
+        <h3 id="total-final">
+            Total final: R$ 0,00
+        </h3>
+
+        <!-- ENTRADA -->
+
+        <div class="linha-entrada">
+
+            <div>
+                <label for="valor-recebido">
+                    Valor recebido / Entrada
+                </label>
+
+                <input
+                    type="number"
+                    id="valor-recebido"
+                    min="0"
+                    step="0.01"
+                    placeholder="Ex: 50,00"
+                >
+            </div>
+
+            <div class="saldo-box">
+
+                <span>Saldo a parcelar</span>
+
+                <strong id="saldo-parcelar">
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+        </div>
+
+        <!-- FORMA DE PAGAMENTO -->
+
+        <label for="forma-pagamento">
+            Forma de pagamento
+        </label>
+
+        <select id="forma-pagamento">
+
+            <option value="avista">
+                À vista
+            </option>
+
+            <option value="prazo">
+                Prazo
+            </option>
+
+        </select>
+
+        <!-- À VISTA -->
+
+        <div id="area-avista">
+
+            <label for="tipo-avista">
+                Tipo de pagamento
+            </label>
+
+            <select id="tipo-avista">
+
+                <option value="pix">
+                    Pix
+                </option>
+
+                <option value="dinheiro">
+                    Dinheiro
+                </option>
+
+                <option value="cartao">
+                    Cartão
+                </option>
+
+            </select>
+
+        </div>
+
+        <!-- A PRAZO -->
+
+        <div
+            id="area-prazo"
+            class="area-prazo"
+            hidden
+        >
+
+            <label for="tipo-prazo">
+                Tipo de prazo
+            </label>
+
+            <select id="tipo-prazo">
+
+                <option value="semanal">
+                    Semanal
+                </option>
+
+                <option value="quinzenal">
+                    Quinzenal
+                </option>
+
+                <option value="pagamento-vale">
+                    Pagamento e Vale
+                </option>
+
+                <option value="mensal">
+                    Mensal
+                </option>
+
+            </select>
+
+            <!-- PAGAMENTO E VALE -->
+
+            <div
+                id="configuracao-pagamento-vale"
+                class="configuracao-pagamento-vale"
+                hidden
+            >
+
+                <div class="linha-dupla">
+
+                    <div>
+                        <label for="dia-pagamento">
+                            Dia do pagamento
+                        </label>
+
+                        <input
+                            type="number"
+                            id="dia-pagamento"
+                            min="1"
+                            max="31"
+                            step="1"
+                            placeholder="Ex: 5"
+                        >
+                    </div>
+
+                    <div>
+                        <label for="dia-vale">
+                            Dia do vale
+                        </label>
+
+                        <input
+                            type="number"
+                            id="dia-vale"
+                            min="1"
+                            max="31"
+                            step="1"
+                            placeholder="Ex: 20"
+                        >
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- DATA -->
+
+            <label for="primeiro-vencimento">
+                Data da primeira parcela
+            </label>
+
+            <input
+                type="date"
+                id="primeiro-vencimento"
+            >
+
+            <!-- PARCELAMENTO -->
+
+            <div class="linha-dupla">
+
+                <div>
+                    <label for="valor-parcela">
+                        Valor da parcela
+                    </label>
+
+                    <input
+                        type="number"
+                        id="valor-parcela"
+                        min="0"
+                        step="0.01"
+                        placeholder="Ex: 30,00"
+                    >
+                </div>
+
+                <div>
+                    <label for="quantidade-parcelas">
+                        Quantidade de parcelas
+                    </label>
+
+                    <input
+                        type="number"
+                        id="quantidade-parcelas"
+                        min="1"
+                        step="1"
+                        placeholder="Ex: 4"
+                    >
+                </div>
+
+            </div>
+
+            <div id="resumo-parcelamento"></div>
+
+        </div>
+
+        <button
+            type="button"
+            id="btn-registrar-venda"
+            class="botao-registrar"
+        >
+            Registrar Venda
+        </button>
+
+        <h3>Resumo da venda</h3>
+
+        <div id="resumo-venda"></div>
+
+    </section>
+
+</main>
+
+<!-- MODAL CLIENTES -->
+
+<div
+    id="modal-clientes"
+    class="modal"
+    hidden
+>
+
+    <div class="modal-conteudo">
+
+        <div class="modal-topo">
+            <h2>Buscar Cliente</h2>
+
+            <button
+                type="button"
+                id="fechar-modal-clientes"
+                class="botao-fechar"
+            >
+                ×
+            </button>
+        </div>
+
+        <input
+            type="text"
+            id="pesquisa-cliente"
+            placeholder="Digite nome, WhatsApp ou cidade"
+        >
+
+        <div
+            id="lista-clientes-modal"
+            class="lista-modal"
+        ></div>
+
+    </div>
+
+</div>
+
+<!-- MODAL PRODUTOS -->
+
+<div
+    id="modal-produtos"
+    class="modal"
+    hidden
+>
+
+    <div class="modal-conteudo">
+
+        <div class="modal-topo">
+            <h2>Buscar Produto</h2>
+
+            <button
+                type="button"
+                id="fechar-modal-produtos"
+                class="botao-fechar"
+            >
+                ×
+            </button>
+        </div>
+
+        <input
+            type="text"
+            id="pesquisa-produto"
+            placeholder="Digite o nome ou a marca"
+        >
+
+        <div
+            id="lista-produtos-modal"
+            class="lista-modal"
+        ></div>
+
+    </div>
+
+</div>
+
+<script src="js/venda.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Login - Meu Negócio Hinode</title>
+
+    <link
+        rel="stylesheet"
+        href="css/loguin.css"
+    >
+</head>
+
+<body>
+
+    <div class="overlay">
+
+        <section class="login-box">
+
+            <h1>Meu Negócio Hinode</h1>
+
+            <h2>LOGIN</h2>
+
+            <form id="formLogin">
+
+                <label for="usuario">
+                    Usuário
+                </label>
+
+                <input
+                    type="text"
+                    id="usuario"
+                    name="usuario"
+                    placeholder="Digite seu login"
+                    autocomplete="username"
+                    maxlength="80"
+                    required
+                >
+
+                <label for="senha">
+                    Senha
+                </label>
+
+                <input
+                    type="password"
+                    id="senha"
+                    name="senha"
+                    placeholder="Digite sua senha"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <p
+                    id="mensagemLogin"
+                    role="alert"
+                    aria-live="polite"
+                ></p>
+
+                <div class="botoes">
+
+                    <button
+    type="submit"
+    class="entrar"
+    id="btnEntrar"
+>
+    Entrar
+</button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </div>
+
+    <script src="js/services/api.js"></script>
+    <script src="js/services/auth.js"></script>
+    <script src="js/loguin.js"></script>
+
+</body>
+</html>

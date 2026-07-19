@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Configurar Mensagens - Meu Negócio Hinode
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/configurar-mensagens.css"
+    >
+</head>
+
+<body>
+
+<main class="container">
+
+    <header class="topo">
+
+        <h1>Meu Negócio Hinode</h1>
+
+        <a
+            href="index.html"
+            class="voltar"
+        >
+            Voltar ao Menu
+        </a>
+
+    </header>
+
+    <section class="card">
+
+        <div class="cabecalho-card">
+
+            <div>
+                <h2>
+                    CONFIGURAÇÃO DE MENSAGENS
+                </h2>
+
+                <p>
+                    Cadastre mensagens para lembretes e cobranças pelo WhatsApp.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                id="btn-nova-mensagem"
+                class="botao-nova"
+            >
+                + Nova mensagem
+            </button>
+
+        </div>
+
+        <!-- FORMULÁRIO -->
+
+        <section
+            id="area-formulario"
+            class="area-formulario"
+        >
+
+            <h3 id="titulo-formulario">
+                Cadastrar mensagem
+            </h3>
+
+            <input
+                type="hidden"
+                id="mensagem-id"
+            >
+
+            <div class="linha-dupla">
+
+                <div>
+                    <label for="titulo">
+                        Título da mensagem
+                    </label>
+
+                    <input
+                        type="text"
+                        id="titulo"
+                        maxlength="100"
+                        placeholder="Ex: Mensagem 1 - Lembrete amigável"
+                    >
+                </div>
+
+                <div>
+                    <label for="ordem">
+                        Ordem
+                    </label>
+
+                    <input
+                        type="number"
+                        id="ordem"
+                        min="1"
+                        step="1"
+                        value="1"
+                    >
+                </div>
+
+            </div>
+
+            <label for="forma-tratamento">
+                Forma padrão de chamar o cliente
+            </label>
+
+            <select id="forma-tratamento">
+
+                <option value="primeiro_nome">
+                    Somente o primeiro nome
+                </option>
+
+                <option value="nome_completo">
+                    Nome completo
+                </option>
+
+                <option value="nome_fantasia_completo">
+                    Nome fantasia completo
+                </option>
+
+                <option value="primeiro_nome_fantasia">
+                    Primeiro nome fantasia
+                </option>
+
+            </select>
+
+            <label for="texto">
+                Texto da mensagem
+            </label>
+
+            <textarea
+                id="texto"
+                rows="10"
+                maxlength="3000"
+                placeholder="Digite sua mensagem..."
+            ></textarea>
+
+            <div class="contador-caracteres">
+
+                <span>
+                    Caracteres:
+                </span>
+
+                <strong id="contador-texto">
+                    0
+                </strong>
+
+            </div>
+
+            <div class="variaveis">
+
+                <h4>
+                    Clique para inserir uma variável
+                </h4>
+
+                <div class="lista-variaveis">
+
+                    <button
+                        type="button"
+                        class="botao-variavel"
+                        data-variavel="{{nome_completo}}"
+                    >
+                        Nome completo
+                    </button>
+
+                    <button
+                        type="button"
+                        class="botao-variavel"
+                        data-variavel="{{primeiro_nome}}"
+                    >
+                        Primeiro nome
+                    </button>
+
+                    <button
+                        type="button"
+                        class="botao-variavel"
+                        data-variavel="{{nome_fantasia}}"
+                    >
+                        Nome fantasia
+                    </button>
+
+                    <button
+                        type="button"
+                        class="botao-variavel"
+                        data-variavel="{{primeiro_nome_fantasia}}"
+                    >
+                        Primeiro nome fantasia
+                    </button>
+
+                    <button
+                        type="button"
+                        class="botao-variavel"
+                        data-variavel="{{valor_parcela}}"
+                    >
+                        Valor da parcela
+                    </button>
+
+                    <button
+                        type="button"
+                        class="botao-variavel"
+                        data-variavel="{{valor_recebido}}"
+                    >
+                        Valor recebido
+                    </button>
+
+                    <button
+                        type="button"
+                        class="botao-variavel"
+                        data-variavel="{{saldo}}"
+                    >
+                        Saldo
+                    </button>
+
+                    <button
+                        type="button"
+                        class="botao-variavel"
+                        data-variavel="{{vencimento}}"
+                    >
+                        Vencimento
+                    </button>
+
+                    <button
+                        type="button"
+                        class="botao-variavel"
+                        data-variavel="{{numero_parcela}}"
+                    >
+                        Número da parcela
+                    </button>
+
+                    <button
+                        type="button"
+                        class="botao-variavel"
+                        data-variavel="{{dias_atraso}}"
+                    >
+                        Dias em atraso
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="linha-status">
+
+                <label class="switch-label">
+
+                    <input
+                        type="checkbox"
+                        id="ativa"
+                        checked
+                    >
+
+                    <span>
+                        Mensagem ativa
+                    </span>
+
+                </label>
+
+            </div>
+
+            <div class="acoes-formulario">
+
+                <button
+                    type="button"
+                    id="btn-salvar"
+                    class="botao-salvar"
+                >
+                    Salvar mensagem
+                </button>
+
+                <button
+                    type="button"
+                    id="btn-cancelar"
+                    class="botao-cancelar"
+                    hidden
+                >
+                    Cancelar edição
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- PRÉVIA -->
+
+        <section class="area-previa">
+
+            <h3>
+                Prévia da mensagem
+            </h3>
+
+            <div class="celular">
+
+                <div class="cabecalho-whatsapp">
+
+                    <div class="avatar">
+                        RB
+                    </div>
+
+                    <div>
+                        <strong>
+                            Cliente de exemplo
+                        </strong>
+
+                        <span>
+                            WhatsApp
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="conversa">
+
+                    <div
+                        id="previa-mensagem"
+                        class="balao-mensagem"
+                    >
+                        Digite uma mensagem para visualizar a prévia.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- LISTA -->
+
+        <section class="area-lista">
+
+            <div class="titulo-lista">
+
+                <h3>
+                    Mensagens cadastradas
+                </h3>
+
+                <span id="total-mensagens">
+                    0 mensagem(ns)
+                </span>
+
+            </div>
+
+            <div
+                id="lista-mensagens"
+                class="lista-mensagens"
+            >
+
+                <p class="carregando">
+                    Carregando mensagens...
+                </p>
+
+            </div>
+
+        </section>
+
+    </section>
+
+</main>
+
+<script src="js/configurar-mensagens.js"></script>
+
+</body>
+</html>

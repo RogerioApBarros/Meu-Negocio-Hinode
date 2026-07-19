@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Formas de Pagamento</title>
+    <link rel="stylesheet" href="css/formas-pagamento.css">
+</head>
+<body>
+
+<main class="container">
+
+    <header class="topo">
+        <h1>Meu Negócio Hinode</h1>
+        <a href="index.html" class="voltar">Voltar ao Menu</a>
+    </header>
+
+    <section class="card">
+
+        <h2>CONFIGURAÇÕES DE FORMAS DE PAGAMENTO A PRAZO</h2>
+
+        <div class="formulario">
+
+            <label>Nome</label>
+            <input type="text" id="nome-forma" placeholder="Ex: Semanal, Quinzenal, Mensal">
+
+            <label>Frequência</label>
+            <select id="frequencia">
+                <option value="">Selecione</option>
+                <option value="intervalo">Intervalo em dias</option>
+                <option value="dia-fixo">Dia fixo</option>
+            </select>
+
+            <label>Intervalo diário</label>
+            <input type="number" id="intervalo-dias" placeholder="Ex: 7, 15, 30">
+
+            <label>Dia fixo</label>
+            <input type="number" id="dia-fixo" placeholder="Ex: 5, 10, 15, 20">
+
+            <label>Modelo de cálculo das parcelas</label>
+            <select id="modelo-calculo">
+                <option value="">Selecione</option>
+                <option value="quantidade-parcelas">Quantidade de parcelas</option>
+                <option value="valor-parcela">Valor da parcela</option>
+            </select>
+
+            <button onclick="salvarFormaPagamento()">
+                Salvar Configuração
+            </button>
+
+        </div>
+
+        <div class="resultado-box">
+            <h3>Formas de pagamento cadastradas</h3>
+            <div id="lista-formas"></div>
+        </div>
+
+    </section>
+
+</main>
+
+<script src="js/formas-pagamento.js"></script>
+
+</body>
+</html>

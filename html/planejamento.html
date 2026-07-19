@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Planejamento</title>
+    <link rel="stylesheet" href="css/planejamento.css">
+</head>
+<body>
+
+<main class="container">
+
+    <header class="topo">
+        <h1>Meu Negócio Hinode</h1>
+        <a href="index.html" class="voltar">Voltar ao Menu</a>
+    </header>
+
+    <section class="card">
+
+        <h2>PLANEJAMENTO</h2>
+
+        <div class="formulario">
+
+            <label>Meta de faturamento mensal</label>
+            <input type="number" id="meta" placeholder="Ex: 50000">
+
+            <label>Margem de lucro / desconto (%)</label>
+            <input type="number" id="margem" placeholder="Ex: 50">
+
+            <label>Data inicial do mês</label>
+            <input type="date" id="data-inicio">
+
+            <label>Data final do mês</label>
+            <input type="date" id="data-fim">
+
+            <button onclick="calcularPlanejamento()">
+                Calcular Planejamento
+            </button>
+
+            <button onclick="resetarPlanejamento()" class="botao-reset">
+                Resetar
+            </button>
+
+        </div>
+
+        <div class="resultados">
+
+            <div class="resultado">
+                <span>Dias úteis no período</span>
+                <strong id="dias-uteis">0</strong>
+            </div>
+
+            <div class="resultado">
+                <span>Dias úteis restantes</span>
+                <strong id="dias-restantes">0</strong>
+            </div>
+
+            <div class="resultado">
+                <span>Meta mensal</span>
+                <strong id="resultado-meta">R$ 0,00</strong>
+            </div>
+
+            <div class="resultado">
+                <span>Realizado</span>
+                <strong id="resultado-realizado">R$ 0,00</strong>
+            </div>
+
+            <div class="resultado">
+                <span>Resta</span>
+                <strong id="resultado-resta">R$ 0,00</strong>
+            </div>
+
+            <div class="resultado">
+                <span>Meta diária atualizada</span>
+                <strong id="resultado-diaria">R$ 0,00</strong>
+            </div>
+
+            <div class="resultado">
+                <span>Estoque necessário</span>
+                <strong id="resultado-estoque">R$ 0,00</strong>
+            </div>
+
+            <div class="resultado">
+                <span>Lucro bruto previsto</span>
+                <strong id="resultado-lucro">R$ 0,00</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script src="js/planejamento.js"></script>
+
+</body>
+</html>

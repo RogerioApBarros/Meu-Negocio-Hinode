@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Pesquisar Clientes - Meu Negócio Hinode</title>
+
+    <link
+        rel="stylesheet"
+        href="css/pesquisar-clientes.css"
+    >
+</head>
+
+<body>
+
+<main class="container">
+
+    <header class="topo">
+
+        <h1>Clientes Cadastrados</h1>
+
+        <div class="acoes-topo">
+
+            <a
+                href="clientes.html"
+                class="botao-topo"
+            >
+                Novo Cliente
+            </a>
+
+            <a
+                href="index.html"
+                class="botao-topo"
+            >
+                Voltar ao Menu
+            </a>
+
+        </div>
+
+    </header>
+
+    <section class="card">
+
+        <div class="barra-pesquisa">
+
+            <input
+                type="text"
+                id="pesquisa-cliente"
+                placeholder="Digite nome, WhatsApp, cidade ou CPF"
+                oninput="filtrarClientes()"
+            >
+
+            <button onclick="carregarClientes()">
+                Atualizar Lista
+            </button>
+
+        </div>
+
+        <div class="resumo-lista">
+
+            <span>Total de clientes:</span>
+
+            <strong id="total-clientes">
+                0
+            </strong>
+
+        </div>
+
+        <div
+            id="lista-clientes"
+            class="lista-clientes"
+        ></div>
+
+    </section>
+
+</main>
+
+<script src="js/pesquisar-clientes.js"></script>
+
+</body>
+</html>

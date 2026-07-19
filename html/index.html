@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Meu Negócio Hinode</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+</head>
+
+<body>
+
+<header class="topo-sistema">
+
+    <div class="topo-marca">
+
+        <h1>Meu Negócio Hinode</h1>
+
+        <p>
+            Gestão de vendas e financeiro
+        </p>
+
+    </div>
+
+    <div class="topo-usuario">
+
+        <div class="dados-usuario">
+
+            <span>
+                Usuário conectado
+            </span>
+
+            <strong id="nomeUsuario">
+                Carregando...
+            </strong>
+
+            <small id="perfilUsuario">
+                ...
+            </small>
+
+        </div>
+
+        <button
+            type="button"
+            class="botao-sair"
+            id="btnSair"
+        >
+            Sair
+        </button>
+
+    </div>
+
+</header>
+
+<main class="container">
+
+    <section class="boas-vindas">
+
+        <div>
+
+            <h2>
+                Visão geral do negócio
+            </h2>
+
+            <p>
+                Acompanhe suas vendas, recebimentos,
+                estoque e resultados.
+            </p>
+
+        </div>
+
+        <div
+            class="status-sessao"
+            id="statusSessao"
+        >
+            Verificando acesso...
+        </div>
+
+    </section>
+
+    <section class="dashboard">
+
+        <div class="card-dashboard">
+
+            <span>Total vendido</span>
+
+            <strong id="dash-vendido">
+                R$ 0,00
+            </strong>
+
+        </div>
+
+        <div class="card-dashboard">
+
+            <span>Total recebido</span>
+
+            <strong id="dash-recebido">
+                R$ 0,00
+            </strong>
+
+        </div>
+
+        <div class="card-dashboard">
+
+            <span>Total em aberto</span>
+
+            <strong id="dash-aberto">
+                R$ 0,00
+            </strong>
+
+        </div>
+
+        <div class="card-dashboard">
+
+            <span>Total vencido</span>
+
+            <strong id="dash-vencido">
+                R$ 0,00
+            </strong>
+
+        </div>
+
+        <div class="card-dashboard">
+
+            <span>Estoque em custo</span>
+
+            <strong id="dash-estoque-custo">
+                R$ 0,00
+            </strong>
+
+        </div>
+
+        <div class="card-dashboard">
+
+            <span>Estoque em venda</span>
+
+            <strong id="dash-estoque-venda">
+                R$ 0,00
+            </strong>
+
+        </div>
+
+        <div
+            class="card-dashboard destaque-dashboard"
+        >
+
+            <span>Lucro bruto previsto</span>
+
+            <strong id="dash-lucro">
+                R$ 0,00
+            </strong>
+
+        </div>
+
+    </section>
+
+    <section class="menu-box">
+
+        <a
+            href="planejamento.html"
+            class="item-menu"
+            data-perfis="admin,financeiro"
+        >
+
+            <div class="icone">
+                📊
+            </div>
+
+            <div>
+
+                <h2>PLANEJAMENTO</h2>
+
+                <p>
+                    Planeje suas metas e resultados
+                </p>
+
+            </div>
+
+            <span>›</span>
+
+        </a>
+
+        <a
+            href="clientes.html"
+            class="item-menu"
+            data-perfis="admin,vendedor,financeiro"
+        >
+
+            <div class="icone">
+                👥
+            </div>
+
+            <div>
+
+                <h2>CLIENTES</h2>
+
+                <p>
+                    Cadastro e histórico dos clientes
+                </p>
+
+            </div>
+
+            <span>›</span>
+
+        </a>
+
+        <a
+            href="produtos.html"
+            class="item-menu"
+            data-perfis="admin,vendedor"
+        >
+
+            <div class="icone">
+                📦
+            </div>
+
+            <div>
+
+                <h2>PRODUTOS</h2>
+
+                <p>
+                    Controle de produtos e estoque
+                </p>
+
+            </div>
+
+            <span>›</span>
+
+        </a>
+
+        <a
+            href="venda.html"
+            class="item-menu"
+            data-perfis="admin,vendedor"
+        >
+
+            <div class="icone">
+                🛒
+            </div>
+
+            <div>
+
+                <h2>VENDAS</h2>
+
+                <p>
+                    Registre suas vendas
+                </p>
+
+            </div>
+
+            <span>›</span>
+
+        </a>
+
+        <a
+            href="recebimento.html"
+            class="item-menu"
+            data-perfis="admin,financeiro"
+        >
+
+            <div class="icone">
+                💳
+            </div>
+
+            <div>
+
+                <h2>RECEBIMENTOS</h2>
+
+                <p>
+                    Controle dos recebimentos
+                </p>
+
+            </div>
+
+            <span>›</span>
+
+        </a>
+
+        <a
+            href="fluxo.html"
+            class="item-menu"
+            data-perfis="admin,financeiro"
+        >
+
+            <div class="icone">
+                📈
+            </div>
+
+            <div>
+
+                <h2>FLUXO FINANCEIRO</h2>
+
+                <p>
+                    Acompanhe os resultados do negócio
+                </p>
+
+            </div>
+
+            <span>›</span>
+
+        </a>
+
+        <a
+            href="relatorios.html"
+            class="item-menu"
+            data-perfis="admin,financeiro"
+        >
+
+            <div class="icone">
+                📑
+            </div>
+
+            <div>
+
+                <h2>RELATÓRIOS</h2>
+
+                <p>
+                    Produtos, clientes, contas a receber e vendas
+                </p>
+
+            </div>
+
+            <span>›</span>
+
+        </a>
+
+        <a
+            href="configurar-mensagens.html"
+            class="item-menu ultimo"
+            data-perfis="admin"
+        >
+
+            <div class="icone">
+                💬
+            </div>
+
+            <div>
+
+                <h2>
+                    MENSAGENS WHATSAPP
+                </h2>
+
+                <p>
+                    Configure mensagens de lembretes e cobranças
+                </p>
+
+            </div>
+
+            <span>›</span>
+
+        </a>
+
+    </section>
+
+</main>
+
+<script src="js/services/api.js"></script>
+<script src="js/services/auth.js"></script>
+<script src="js/protegerPaginas.js"></script>
+<script src="js/index.js"></script>
+
+</body>
+</html>

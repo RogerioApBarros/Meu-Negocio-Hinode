@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Alterar Produto - Meu Negócio Hinode</title>
+    <link rel="stylesheet" href="css/produtos.css">
+</head>
+<body>
+
+<main class="container">
+
+    <header class="topo">
+        <h1>Meu Negócio Hinode</h1>
+        <a href="produtos.html" class="voltar">Voltar ao Cadastro</a>
+    </header>
+
+    <section class="card">
+
+        <h2>ALTERAR PRODUTO</h2>
+
+        <div class="area-busca-produto aberta">
+
+            <label>Buscar produto cadastrado</label>
+            <input
+                type="text"
+                id="buscar-produto"
+                placeholder="Digite as iniciais do produto"
+                oninput="filtrarProdutos()"
+            >
+
+            <div id="resultado-busca-produtos"></div>
+
+        </div>
+
+        <div class="formulario">
+
+            <input type="hidden" id="produto-id">
+
+            <label>Nome do produto *</label>
+            <input type="text" id="nome-produto" placeholder="Ex: Empire">
+
+            <label>Marca *</label>
+            <input type="text" id="marca" placeholder="Ex: Hinode">
+
+            <label>Custo *</label>
+            <input type="number" id="custo" placeholder="Ex: 100">
+
+            <label>Valor de venda *</label>
+            <input type="number" id="valor-venda" placeholder="Ex: 200">
+
+            <label>Impostos *</label>
+            <input type="number" id="impostos" placeholder="Ex: 10">
+
+            <label>Quantidade *</label>
+            <input type="number" id="quantidade" placeholder="Ex: 5">
+
+            <button onclick="salvarAlteracoes()">
+                Salvar Alterações
+            </button>
+
+        </div>
+
+        <div class="resultados">
+
+            <div class="resultado">
+                <span>Margem lucro bruto</span>
+                <strong id="margem-bruta">0%</strong>
+            </div>
+
+            <div class="resultado">
+                <span>Margem lucro líquido</span>
+                <strong id="margem-liquida">0%</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script src="js/editar-produto.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Relatórios - Meu Negócio Hinode
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/relatorios.css"
+    >
+</head>
+
+<body>
+
+<main class="container">
+
+    <header class="topo">
+
+        <h1>Meu Negócio Hinode</h1>
+
+        <a
+            href="index.html"
+            class="voltar"
+        >
+            Voltar ao Menu
+        </a>
+
+    </header>
+
+    <section class="card">
+
+        <h2>CENTRAL DE RELATÓRIOS</h2>
+
+        <!-- PRODUTOS E CLIENTES -->
+
+        <div class="grupo-relatorio">
+
+            <h3>📊 Produtos e Clientes</h3>
+
+            <button
+                type="button"
+                onclick="produtosMaisVendidos()"
+            >
+                Produtos mais vendidos
+            </button>
+
+            <button
+                type="button"
+                onclick="clientesMaisCompram()"
+            >
+                Clientes que mais compram
+            </button>
+
+        </div>
+
+        <!-- CONTAS A RECEBER -->
+
+        <div class="grupo-relatorio">
+
+            <h3>💰 Contas a Receber</h3>
+
+            <button
+                type="button"
+                onclick="parcelasEmAtraso()"
+            >
+                Parcelas em atraso
+            </button>
+
+            <button
+                type="button"
+                onclick="abrirFiltroParcelasPeriodo()"
+            >
+                Parcelas entre datas
+            </button>
+
+            <button
+                type="button"
+                onclick="abrirFiltroParcelasCliente()"
+            >
+                Parcelas por cliente
+            </button>
+
+            <button
+                type="button"
+                onclick="abrirFiltroHistoricoCliente()"
+            >
+                Histórico financeiro do cliente
+            </button>
+
+            <button
+                type="button"
+                onclick="resumoFinanceiro()"
+            >
+                Resumo financeiro
+            </button>
+
+        </div>
+
+        <!-- VENDAS -->
+
+        <div class="grupo-relatorio">
+
+            <h3>🛒 Vendas</h3>
+
+            <button
+                type="button"
+                onclick="abrirFiltroVendasPeriodo()"
+            >
+                Vendas entre datas
+            </button>
+
+            <button
+                type="button"
+                onclick="abrirFiltroVendasClientePeriodo()"
+            >
+                Vendas por cliente entre datas
+            </button>
+
+        </div>
+
+        <!-- RECEBIMENTOS -->
+
+        <div class="grupo-relatorio">
+
+            <h3>📈 Fluxo Financeiro</h3>
+
+            <button
+                type="button"
+                onclick="abrirFiltroRecebimentosPeriodo()"
+            >
+                Recebimentos entre datas
+            </button>
+
+        </div>
+
+        <!-- AÇÕES DO RELATÓRIO -->
+
+        <div class="acoes">
+
+            <button
+                type="button"
+                onclick="salvarPDF()"
+            >
+                📄 Salvar PDF
+            </button>
+
+            <button
+                type="button"
+                onclick="compartilharRelatorio()"
+            >
+                📤 Compartilhar
+            </button>
+
+        </div>
+
+        <!-- ÁREA DE FILTROS -->
+
+        <div id="area-filtros"></div>
+
+        <!-- ÁREA DO RELATÓRIO -->
+
+        <div id="area-relatorio">
+
+            <p class="mensagem-inicial">
+                Selecione um relatório acima.
+            </p>
+
+        </div>
+
+        <!-- ÁREA DE DISPARO WHATSAPP -->
+
+        <section
+            id="area-disparo-whatsapp"
+            class="area-disparo-whatsapp"
+            hidden
+        >
+
+            <div class="titulo-disparo">
+
+                <div>
+
+                    <h3>
+                        📲 Disparo de mensagens pelo WhatsApp
+                    </h3>
+
+                    <p>
+                        Selecione os clientes, escolha uma mensagem e prepare a fila.
+                    </p>
+
+                </div>
+
+                <a
+                    href="configurar-mensagens.html"
+                    class="link-configurar-mensagens"
+                >
+                    Configurar mensagens
+                </a>
+
+            </div>
+
+            <!-- CONFIGURAÇÃO DO DISPARO -->
+
+            <div class="configuracao-disparo">
+
+                <div class="campo-disparo">
+
+                    <label for="mensagem-disparo">
+                        Mensagem
+                    </label>
+
+                    <select id="mensagem-disparo">
+
+                        <option value="">
+                            Selecione uma mensagem
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="campo-disparo">
+
+                    <label for="tratamento-disparo">
+                        Como chamar o cliente
+                    </label>
+
+                    <select id="tratamento-disparo">
+
+                        <option value="mensagem">
+                            Usar configuração da mensagem
+                        </option>
+
+                        <option value="primeiro_nome">
+                            Primeiro nome
+                        </option>
+
+                        <option value="nome_completo">
+                            Nome completo
+                        </option>
+
+                        <option value="nome_fantasia_completo">
+                            Nome fantasia completo
+                        </option>
+
+                        <option value="primeiro_nome_fantasia">
+                            Primeiro nome fantasia
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="campo-disparo">
+
+                    <label for="velocidade-disparo">
+                        Velocidade
+                    </label>
+
+                    <select id="velocidade-disparo">
+
+                        <option value="lento">
+                            Lento — 15 segundos
+                        </option>
+
+                        <option
+                            value="medio"
+                            selected
+                        >
+                            Médio — 8 segundos
+                        </option>
+
+                        <option value="rapido">
+                            Rápido — 5 segundos
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <!-- RESUMO DA FILA -->
+
+            <div class="resumo-fila">
+
+                <div>
+
+                    <span>Selecionados</span>
+
+                    <strong id="total-selecionados">
+                        0
+                    </strong>
+
+                </div>
+
+                <div>
+
+                    <span>Com WhatsApp</span>
+
+                    <strong id="total-com-whatsapp">
+                        0
+                    </strong>
+
+                </div>
+
+                <div>
+
+                    <span>Sem WhatsApp</span>
+
+                    <strong id="total-sem-whatsapp">
+                        0
+                    </strong>
+
+                </div>
+
+                <div>
+
+                    <span>Tempo estimado</span>
+
+                    <strong id="tempo-estimado">
+                        0 segundos
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <!-- BOTÕES DE SELEÇÃO -->
+
+            <div class="acoes-selecao">
+
+                <button
+                    type="button"
+                    id="btn-selecionar-todos"
+                    class="botao-selecionar"
+                >
+                    Selecionar todos
+                </button>
+
+                <button
+                    type="button"
+                    id="btn-desmarcar-todos"
+                    class="botao-desmarcar"
+                >
+                    Desmarcar todos
+                </button>
+
+            </div>
+
+            <!-- LISTA DE DESTINATÁRIOS -->
+
+            <div class="cabecalho-destinatarios">
+
+                <h4>
+                    Clientes do relatório
+                </h4>
+
+                <span>
+                    Desmarque quem não deve receber a mensagem.
+                </span>
+
+            </div>
+
+            <div
+                id="lista-destinatarios"
+                class="lista-destinatarios"
+            ></div>
+
+            <!-- PRÉVIA -->
+
+            <div class="area-previa-disparo">
+
+                <h4>
+                    Prévia da mensagem
+                </h4>
+
+                <div
+                    id="previa-disparo"
+                    class="previa-disparo"
+                >
+                    Selecione uma mensagem para visualizar a prévia.
+                </div>
+
+            </div>
+
+            <!-- CONFIRMAÇÃO -->
+
+            <div class="acoes-disparo">
+
+                <button
+                    type="button"
+                    id="btn-iniciar-disparo"
+                    class="botao-iniciar-disparo"
+                >
+                    Iniciar fila de mensagens
+                </button>
+
+                <button
+                    type="button"
+                    id="btn-pausar-disparo"
+                    class="botao-pausar"
+                    hidden
+                >
+                    Pausar
+                </button>
+
+                <button
+                    type="button"
+                    id="btn-continuar-disparo"
+                    class="botao-continuar"
+                    hidden
+                >
+                    Continuar
+                </button>
+
+                <button
+                    type="button"
+                    id="btn-cancelar-disparo"
+                    class="botao-cancelar-disparo"
+                    hidden
+                >
+                    Cancelar
+                </button>
+
+            </div>
+
+            <!-- PROGRESSO -->
+
+            <div
+                id="painel-progresso-disparo"
+                class="painel-progresso-disparo"
+                hidden
+            >
+
+                <h4>
+                    Acompanhamento do disparo
+                </h4>
+
+                <div class="barra-progresso">
+
+                    <div
+                        id="progresso-disparo"
+                        class="progresso-disparo"
+                    ></div>
+
+                </div>
+
+                <div class="resumo-progresso">
+
+                    <div>
+
+                        <span>Aguardando</span>
+
+                        <strong id="progresso-aguardando">
+                            0
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>Processados</span>
+
+                        <strong id="progresso-processados">
+                            0
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>Enviados</span>
+
+                        <strong id="progresso-enviados">
+                            0
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>Erros</span>
+
+                        <strong id="progresso-erros">
+                            0
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>Sem contato</span>
+
+                        <strong id="progresso-sem-contato">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="lista-resultados-disparo"
+                    class="lista-resultados-disparo"
+                ></div>
+
+            </div>
+
+        </section>
+
+    </section>
+
+</main>
+
+<!-- MODAL DE CLIENTES -->
+
+<div
+    id="modal-clientes"
+    class="modal"
+    hidden
+>
+
+    <div class="modal-conteudo">
+
+        <div class="modal-topo">
+
+            <h2>Buscar Cliente</h2>
+
+            <button
+                type="button"
+                class="fechar-modal"
+                onclick="fecharModalClientes()"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <input
+            type="text"
+            id="pesquisa-cliente-modal"
+            placeholder="Digite nome, WhatsApp, CPF ou cidade"
+            oninput="filtrarClientesModal()"
+        >
+
+        <div
+            id="lista-clientes-modal"
+            class="lista-clientes-modal"
+        ></div>
+
+    </div>
+
+</div>
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+></script>
+
+<script src="js/relatorios.js"></script>
+
+</body>
+</html>

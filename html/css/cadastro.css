@@ -1,0 +1,95 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-image: url("../../image/fundo_inicial.png");
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+}
+
+.overlay {
+    background: rgba(0, 0, 0, 0.45);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cadastro-box {
+    width: 430px;
+    background: rgba(55, 25, 50, 0.88);
+    border: 3px solid white;
+    border-radius: 25px;
+    padding: 35px;
+    color: white;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.cadastro-box h1 {
+    text-align: center;
+    margin: 0;
+    font-size: 34px;
+}
+
+.cadastro-box h2 {
+    text-align: center;
+    color: #d8c1f0;
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px;
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.botao-secundario {
+    background: white;
+    color: #5a1f8c;
+    margin-bottom: 15px;
+}
+
+.botao-principal {
+    background: #5a1f8c;
+    color: white;
+    margin-top: 15px;
+}
+
+#regras-senha {
+    background: rgba(255,255,255,0.12);
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 14px;
+}
+
+#regras-senha p {
+    margin: 5px 0;
+}
+
+.link-login {
+    display: block;
+    text-align: center;
+    margin-top: 18px;
+    color: white;
+    text-decoration: none;
+}

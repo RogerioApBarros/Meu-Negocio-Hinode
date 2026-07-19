@@ -1,0 +1,479 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+body {
+    min-height: 100vh;
+
+    background-image:
+        url("../../image/fundo_inicial.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    color: white;
+}
+
+body::before {
+    content: "";
+
+    position: fixed;
+    inset: 0;
+
+    background:
+        rgba(35, 0, 35, 0.65);
+
+    z-index: -1;
+}
+
+.container {
+    width: 95%;
+    max-width: 1100px;
+
+    margin: auto;
+
+    padding:
+        30px 0 50px;
+}
+
+.topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+h1 {
+    font-size: 42px;
+
+    text-shadow:
+        0 0 10px
+        rgba(0, 0, 0, 0.8);
+}
+
+.voltar {
+    background: #5a1f8c;
+    color: white;
+
+    padding:
+        12px 22px;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.card {
+    background:
+        rgba(70, 20, 60, 0.82);
+
+    border:
+        2px solid white;
+
+    border-radius: 22px;
+
+    padding: 30px;
+}
+
+.card h2 {
+    text-align: center;
+
+    margin-bottom: 25px;
+}
+
+.grupo-relatorio {
+    background:
+        rgba(255, 255, 255, 0.10);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.70);
+
+    border-radius: 16px;
+
+    padding: 20px;
+
+    margin-bottom: 22px;
+}
+
+.grupo-relatorio h3 {
+    margin-bottom: 15px;
+}
+
+button {
+    background: #5a1f8c;
+    color: white;
+
+    border: none;
+    border-radius: 10px;
+
+    padding:
+        12px 17px;
+
+    margin:
+        6px 4px;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #7a33b8;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.acoes {
+    text-align: center;
+
+    margin:
+        25px 0;
+}
+
+#area-filtros {
+    margin-bottom: 20px;
+}
+
+.filtro-box {
+    background:
+        rgba(255, 255, 255, 0.14);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.75);
+
+    border-radius: 16px;
+
+    padding: 20px;
+}
+
+.filtro-box h3 {
+    margin-bottom: 15px;
+}
+
+.filtro-box label {
+    display: block;
+
+    margin:
+        10px 0 5px;
+
+    font-weight: bold;
+}
+
+.filtro-box input,
+.filtro-box select {
+    width: 100%;
+
+    padding: 12px;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 15px;
+}
+
+.linha-filtros {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            minmax(0, 1fr)
+        );
+
+    gap: 12px;
+}
+
+.linha-cliente {
+    display: grid;
+
+    grid-template-columns:
+        1fr auto;
+
+    gap: 8px;
+
+    align-items: center;
+}
+
+.linha-cliente button {
+    margin: 0;
+}
+
+#area-relatorio {
+    background:
+        rgba(255, 255, 255, 0.97);
+
+    color: #222;
+
+    border-radius: 18px;
+
+    padding: 25px;
+
+    min-height: 180px;
+
+    overflow-wrap: anywhere;
+}
+
+#area-relatorio h3 {
+    color: #5a1f8c;
+
+    margin-bottom: 15px;
+}
+
+#area-relatorio h4 {
+    color: #5a1f8c;
+
+    margin:
+        25px 0 10px;
+}
+
+.mensagem-inicial,
+.mensagem-vazia,
+.carregando {
+    text-align: center;
+
+    color: #555;
+
+    padding: 30px;
+}
+
+.mensagem-erro {
+    color: #a30000;
+
+    background: #ffdede;
+
+    border:
+        1px solid #cc7070;
+
+    border-radius: 10px;
+
+    padding: 15px;
+}
+
+.relatorio-item {
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+
+    border-bottom:
+        1px solid #ccc;
+
+    padding:
+        14px 0;
+}
+
+.relatorio-item:last-child {
+    border-bottom: none;
+}
+
+.relatorio-item strong {
+    color: #5a1f8c;
+}
+
+.resumo-relatorio {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            minmax(0, 1fr)
+        );
+
+    gap: 10px;
+
+    margin:
+        18px 0;
+}
+
+.resumo-relatorio div {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+
+    padding: 13px;
+
+    background: #f0e4f5;
+
+    border:
+        1px solid #c5a7d2;
+
+    border-radius: 10px;
+
+    text-align: center;
+}
+
+.resumo-relatorio strong {
+    color: #5a1f8c;
+
+    font-size: 18px;
+}
+
+/* MODAL */
+
+.modal {
+    position: fixed;
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+
+    background:
+        rgba(0, 0, 0, 0.75);
+}
+
+.modal-conteudo {
+    width:
+        min(95%, 720px);
+
+    max-height: 85vh;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 20px;
+
+    background: #482041;
+
+    border:
+        2px solid white;
+
+    border-radius: 16px;
+}
+
+.modal-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 12px;
+}
+
+.fechar-modal {
+    margin: 0;
+
+    padding:
+        4px 12px;
+
+    background: #9e2424;
+
+    font-size: 25px;
+}
+
+.modal-conteudo input {
+    width: 100%;
+
+    padding: 12px;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 15px;
+}
+
+.lista-clientes-modal {
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+
+    margin-top: 12px;
+
+    overflow-y: auto;
+}
+
+.cliente-modal-item {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 4px;
+
+    margin: 0;
+
+    text-align: left;
+
+    background:
+        rgba(255, 255, 255, 0.14);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.30);
+}
+
+.cliente-modal-item:hover {
+    background:
+        rgba(255, 255, 255, 0.25);
+}
+
+@media (
+    max-width: 800px
+) {
+    .linha-filtros,
+    .resumo-relatorio {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (
+    max-width: 600px
+) {
+    .topo {
+        flex-direction: column;
+
+        gap: 15px;
+    }
+
+    h1 {
+        font-size: 31px;
+
+        text-align: center;
+    }
+
+    .card {
+        padding: 18px;
+    }
+
+    .grupo-relatorio button {
+        width: 100%;
+
+        margin:
+            5px 0;
+    }
+
+    .linha-filtros,
+    .linha-cliente,
+    .resumo-relatorio {
+        grid-template-columns: 1fr;
+    }
+
+    .linha-cliente button {
+        width: 100%;
+    }
+}

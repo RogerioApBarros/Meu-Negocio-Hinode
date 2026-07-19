@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro - Meu Negócio Hinode</title>
+    <link rel="stylesheet" href="css/cadastro.css">
+</head>
+<body>
+
+    <div class="overlay">
+
+        <section class="cadastro-box">
+
+            <h1>Meu Negócio Hinode</h1>
+            <h2>Cadastro</h2>
+
+            <label>Nome</label>
+            <input type="text" id="nome" placeholder="Digite seu nome">
+
+            <label>E-mail</label>
+            <input type="email" id="email" placeholder="Digite seu e-mail">
+
+            <label>Login</label>
+            <input type="text" id="login" placeholder="Digite seu login">
+
+            <label>Senha</label>
+            <input type="password" id="senha" placeholder="Digite sua senha">
+
+            <label>Confirmar senha</label>
+            <input type="password" id="confirmar-senha" placeholder="Confirme sua senha">
+
+            <button onclick="gerarSenhaForte()" class="botao-secundario">
+                Sugerir senha forte
+            </button>
+
+            <div id="regras-senha">
+                <p id="regra-tamanho">❌ Mínimo 8 caracteres</p>
+                <p id="regra-maiuscula">❌ Letra maiúscula</p>
+                <p id="regra-minuscula">❌ Letra minúscula</p>
+                <p id="regra-numero">❌ Número</p>
+                <p id="regra-especial">❌ Caractere especial</p>
+            </div>
+
+            <button onclick="cadastrarUsuario()" class="botao-principal">
+                Cadastrar
+            </button>
+
+            <a href="loguin.html" class="link-login">
+                Já tenho cadastro
+            </a>
+
+        </section>
+
+    </div>
+
+    <script src="css/cadastro.css"></script>
+
+</body>
+</html>

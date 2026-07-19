@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Pesquisar Produtos - Meu Negócio Hinode</title>
+    <link rel="stylesheet" href="css/pesquisar-produtos.css">
+</head>
+<body>
+
+<main class="container">
+
+    <header class="topo">
+
+        <h1>Produtos Cadastrados</h1>
+
+        <a href="produtos.html" class="voltar">
+            Voltar ao Cadastro
+        </a>
+
+    </header>
+
+    <section class="card">
+
+        <div class="barra-pesquisa">
+
+            <input
+                type="text"
+                id="pesquisa-produto"
+                placeholder="Digite o nome ou a marca do produto"
+                oninput="filtrarProdutos()"
+            >
+
+            <button onclick="carregarProdutos()">
+                Atualizar Lista
+            </button>
+
+        </div>
+
+        <div class="resumo-lista">
+
+            <div>
+                <span>Total de produtos</span>
+                <strong id="total-produtos">0</strong>
+            </div>
+
+            <div>
+                <span>Unidades em estoque</span>
+                <strong id="total-unidades">0</strong>
+            </div>
+
+            <div>
+                <span>Estoque em custo</span>
+                <strong id="estoque-custo">R$ 0,00</strong>
+            </div>
+
+            <div>
+                <span>Estoque em venda</span>
+                <strong id="estoque-venda">R$ 0,00</strong>
+            </div>
+
+        </div>
+
+        <div id="lista-produtos" class="lista-produtos"></div>
+
+    </section>
+
+</main>
+
+<!-- MODAL DE EDIÇÃO -->
+
+<div id="modal-edicao" class="modal">
+
+    <div class="modal-conteudo">
+
+        <h2>Editar Produto</h2>
+
+        <input type="hidden" id="produto-id">
+
+        <label>Nome do produto *</label>
+        <input type="text" id="editar-nome-produto">
+
+        <label>Marca *</label>
+        <input type="text" id="editar-marca">
+
+        <label>Custo *</label>
+        <input type="number" id="editar-custo" step="0.01">
+
+        <label>Valor de venda *</label>
+        <input type="number" id="editar-valor-venda" step="0.01">
+
+        <label>Impostos *</label>
+        <input type="number" id="editar-impostos" step="0.01">
+
+        <label>Quantidade *</label>
+        <input type="number" id="editar-quantidade" min="0">
+
+        <div class="margens-edicao">
+
+            <div>
+                <span>Margem bruta</span>
+                <strong id="editar-margem-bruta">0%</strong>
+            </div>
+
+            <div>
+                <span>Margem líquida</span>
+                <strong id="editar-margem-liquida">0%</strong>
+            </div>
+
+        </div>
+
+        <div class="acoes-modal">
+
+            <button onclick="salvarAlteracoes()">
+                Salvar Alterações
+            </button>
+
+            <button
+                onclick="fecharModalEdicao()"
+                class="botao-secundario"
+            >
+                Cancelar
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="js/pesquisar-produtos.js"></script>
+
+</body>
+</html>

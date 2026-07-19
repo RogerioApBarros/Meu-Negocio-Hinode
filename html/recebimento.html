@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Recebimentos - Meu Negócio Hinode</title>
+    <link rel="stylesheet" href="css/recebimento.css">
+</head>
+<body>
+
+<main class="container">
+
+    <header class="topo">
+        <h1>Meu Negócio Hinode</h1>
+        <a href="index.html" class="voltar">Voltar ao Menu</a>
+    </header>
+
+    <section class="card">
+
+        <h2>RECEBIMENTOS</h2>
+
+        <label>Cliente</label>
+
+        <div class="linha-busca">
+            <input type="text" id="cliente" placeholder="Selecione um cliente" readonly>
+            <button onclick="abrirModalClientes()">Buscar Cliente</button>
+        </div>
+
+        <div id="resumo-cliente"></div>
+
+        <div id="area-recebimento">
+            <h3>Parcelas</h3>
+            <p>Selecione um cliente para visualizar as parcelas.</p>
+        </div>
+
+    </section>
+
+</main>
+
+<div id="modal-clientes" class="modal">
+    <div class="modal-conteudo">
+
+        <h2>Selecionar Cliente</h2>
+
+        <input
+            type="text"
+            id="pesquisa-cliente"
+            placeholder="Digite as iniciais do cliente"
+            oninput="filtrarClientesModal()"
+        >
+
+        <div id="lista-clientes-modal"></div>
+
+        <button onclick="fecharModalClientes()" class="botao-secundario">
+            Fechar
+        </button>
+
+    </div>
+</div>
+
+<script src="js/recebimento.js"></script>
+
+</body>
+</html>
