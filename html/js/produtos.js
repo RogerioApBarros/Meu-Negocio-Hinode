@@ -94,34 +94,40 @@ function validarProduto(produto) {
 }
 
 async function cadastrarProduto() {
-    let produto = pegarDadosProduto();
+    const produto = pegarDadosProduto();
 
     if (!validarProduto(produto)) {
         return;
     }
 
     try {
-        let resposta = await fetch("http://localhost:3000/produtos", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(produto)
-        });
+        const dados = await window.API.requisicao(
+            "/produtos",
+            {
+                method: "POST",
+                body: produto
+            }
+        );
 
-        let dados = await resposta.json();
+        alert(
+            dados.mensagem ||
+            "Produto cadastrado com sucesso!"
+        );
 
-        if (resposta.ok) {
-            alert("Produto cadastrado com sucesso!");
-            limparCampos();
-        } else {
-            alert(dados.erro || "Erro ao cadastrar produto.");
-        }
+        limparCampos();
 
     } catch (erro) {
-        console.log("Erro ao cadastrar produto:", erro);
-        alert("Erro de conexão com o servidor.");
+        console.error(
+            "Erro ao cadastrar produto:",
+            erro
+        );
+
+        alert(
+            erro.message ||
+            "Erro ao cadastrar produto."
+        );
     }
+
 }
 
 function limparCampos() {
