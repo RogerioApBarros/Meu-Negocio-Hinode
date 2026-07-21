@@ -6,38 +6,53 @@ window.onload = function () {
 
 async function carregarClientes() {
     try {
-        const resposta = await fetch(
-            "http://localhost:3000/clientes"
-        );
-
-        const dados = await resposta.json();
-
-        if (!resposta.ok) {
-            throw new Error(
-                dados.erro || "Erro ao carregar clientes."
+        clientesCadastrados =
+            await window.API.requisicao(
+                "/clientes"
             );
+
+        if (!Array.isArray(clientesCadastrados)) {
+            clientesCadastrados = [];
         }
 
-        clientesCadastrados = dados;
-
         clientesCadastrados.sort(function (a, b) {
-            return String(a.nome).localeCompare(
-                String(b.nome),
+            return String(
+                a.nome || ""
+            ).localeCompare(
+                String(b.nome || ""),
                 "pt-BR"
             );
         });
 
-        document.getElementById("total-clientes").textContent =
+        document.getElementById(
+            "total-clientes"
+        ).textContent =
             clientesCadastrados.length;
 
-        mostrarClientes(clientesCadastrados);
+        mostrarClientes(
+            clientesCadastrados
+        );
 
     } catch (erro) {
-        console.log("Erro ao carregar clientes:", erro);
+        console.error(
+            "Erro ao carregar clientes:",
+            erro
+        );
 
-        document.getElementById("lista-clientes").innerHTML = `
+        clientesCadastrados = [];
+
+        document.getElementById(
+            "total-clientes"
+        ).textContent = "0";
+
+        document.getElementById(
+            "lista-clientes"
+        ).innerHTML = `
             <div class="mensagem">
-                Não foi possível carregar os clientes.
+                ${
+                    erro.message ||
+                    "Não foi possível carregar os clientes."
+                }
             </div>
         `;
     }
@@ -45,41 +60,63 @@ async function carregarClientes() {
 
 function filtrarClientes() {
     const busca = document
-        .getElementById("pesquisa-cliente")
+        .getElementById(
+            "pesquisa-cliente"
+        )
         .value
         .toLowerCase()
         .trim();
 
     if (busca === "") {
-        mostrarClientes(clientesCadastrados);
+        mostrarClientes(
+            clientesCadastrados
+        );
+
         return;
     }
 
-    const filtrados = clientesCadastrados.filter(function (cliente) {
-        return (
-            String(cliente.nome || "")
-                .toLowerCase()
-                .includes(busca) ||
+    const filtrados =
+        clientesCadastrados.filter(
+            function (cliente) {
+                const nome =
+                    String(
+                        cliente.nome || ""
+                    ).toLowerCase();
 
-            String(cliente.contato || "")
-                .toLowerCase()
-                .includes(busca) ||
+                const contato =
+                    String(
+                        cliente.contato || ""
+                    ).toLowerCase();
 
-            String(cliente.cidade || "")
-                .toLowerCase()
-                .includes(busca) ||
+                const cidade =
+                    String(
+                        cliente.cidade || ""
+                    ).toLowerCase();
 
-            String(cliente.cpf || "")
-                .toLowerCase()
-                .includes(busca)
+                const cpf =
+                    String(
+                        cliente.cpf || ""
+                    ).toLowerCase();
+
+                return (
+                    nome.includes(busca) ||
+                    contato.includes(busca) ||
+                    cidade.includes(busca) ||
+                    cpf.includes(busca)
+                );
+            }
         );
-    });
 
-    mostrarClientes(filtrados);
+    mostrarClientes(
+        filtrados
+    );
 }
 
 function mostrarClientes(clientes) {
-    const lista = document.getElementById("lista-clientes");
+    const lista =
+        document.getElementById(
+            "lista-clientes"
+        );
 
     lista.innerHTML = "";
 
@@ -93,89 +130,114 @@ function mostrarClientes(clientes) {
         return;
     }
 
-    clientes.forEach(function (cliente) {
-        const nomeSeguro = escaparAtributo(cliente.nome);
+    clientes.forEach(
+        function (cliente) {
+            const nomeSeguro =
+                escaparAtributo(
+                    cliente.nome || ""
+                );
 
-        lista.innerHTML += `
-            <article class="cliente-card">
+            lista.innerHTML += `
+                <article class="cliente-card">
 
-                <div class="cliente-cabecalho">
+                    <div class="cliente-cabecalho">
 
-                    <h3>
-                        ${escaparHTML(cliente.nome)}
-                    </h3>
+                        <h3>
+                            ${escaparHTML(
+                                cliente.nome ||
+                                "Cliente sem nome"
+                            )}
+                        </h3>
 
-                    <span>
-                        #${cliente.id}
-                    </span>
+                        <span>
+                            #${cliente.id}
+                        </span>
 
-                </div>
+                    </div>
 
-                <div class="cliente-dados">
+                    <div class="cliente-dados">
 
-                    <p>
-                        <strong>WhatsApp:</strong>
-                        ${mostrarValor(cliente.contato)}
-                    </p>
+                        <p>
+                            <strong>WhatsApp:</strong>
+                            ${mostrarValor(
+                                cliente.contato
+                            )}
+                        </p>
 
-                    <p>
-                        <strong>CPF:</strong>
-                        ${mostrarValor(cliente.cpf)}
-                    </p>
+                        <p>
+                            <strong>CPF:</strong>
+                            ${mostrarValor(
+                                cliente.cpf
+                            )}
+                        </p>
 
-                    <p>
-                        <strong>RG:</strong>
-                        ${mostrarValor(cliente.rg)}
-                    </p>
+                        <p>
+                            <strong>RG:</strong>
+                            ${mostrarValor(
+                                cliente.rg
+                            )}
+                        </p>
 
-                    <p>
-                        <strong>Cidade:</strong>
-                        ${mostrarValor(cliente.cidade)}
-                    </p>
+                        <p>
+                            <strong>Cidade:</strong>
+                            ${mostrarValor(
+                                cliente.cidade
+                            )}
+                        </p>
 
-                    <p>
-                        <strong>Bairro:</strong>
-                        ${mostrarValor(cliente.bairro)}
-                    </p>
+                        <p>
+                            <strong>Bairro:</strong>
+                            ${mostrarValor(
+                                cliente.bairro
+                            )}
+                        </p>
 
-                    <p>
-                        <strong>Endereço:</strong>
-                        ${montarEndereco(cliente)}
-                    </p>
+                        <p>
+                            <strong>Endereço:</strong>
+                            ${montarEndereco(
+                                cliente
+                            )}
+                        </p>
 
-                </div>
+                    </div>
 
-                <div class="acoes-cliente">
+                    <div class="acoes-cliente">
 
-                    <button
-                        onclick="editarCliente(${cliente.id})"
-                        class="botao-editar"
-                    >
-                        Editar
-                    </button>
+                        <button
+                            type="button"
+                            onclick="editarCliente(${cliente.id})"
+                            class="botao-editar"
+                        >
+                            Editar
+                        </button>
 
-                    <button
-                        onclick="excluirCliente(
-                            ${cliente.id},
-                            '${nomeSeguro}'
-                        )"
-                        class="botao-excluir"
-                    >
-                        Excluir
-                    </button>
+                        <button
+                            type="button"
+                            onclick="excluirCliente(
+                                ${cliente.id},
+                                '${nomeSeguro}'
+                            )"
+                            class="botao-excluir"
+                        >
+                            Excluir
+                        </button>
 
-                    <button
-                        onclick="verHistorico('${nomeSeguro}')"
-                        class="botao-historico"
-                    >
-                        Ver Histórico
-                    </button>
+                        <button
+                            type="button"
+                            onclick="verHistorico(
+                                '${nomeSeguro}'
+                            )"
+                            class="botao-historico"
+                        >
+                            Ver Histórico
+                        </button>
 
-                </div>
+                    </div>
 
-            </article>
-        `;
-    });
+                </article>
+            `;
+        }
+    );
 }
 
 function mostrarValor(valor) {
@@ -187,33 +249,69 @@ function mostrarValor(valor) {
         return "Não informado";
     }
 
-    return escaparHTML(valor);
+    return escaparHTML(
+        valor
+    );
 }
 
 function montarEndereco(cliente) {
     const partes = [];
 
-    if (cliente.rua) {
-        partes.push(cliente.rua);
+    if (
+        cliente.rua &&
+        String(cliente.rua).trim() !== ""
+    ) {
+        partes.push(
+            cliente.rua
+        );
     }
 
-    if (cliente.numero) {
-        partes.push("nº " + cliente.numero);
+    if (
+        cliente.numero &&
+        String(cliente.numero).trim() !== ""
+    ) {
+        partes.push(
+            "nº " + cliente.numero
+        );
+    }
+
+    if (
+        cliente.bairro &&
+        String(cliente.bairro).trim() !== ""
+    ) {
+        partes.push(
+            cliente.bairro
+        );
+    }
+
+    if (
+        cliente.cidade &&
+        String(cliente.cidade).trim() !== ""
+    ) {
+        partes.push(
+            cliente.cidade
+        );
     }
 
     if (partes.length === 0) {
         return "Não informado";
     }
 
-    return escaparHTML(partes.join(", "));
+    return escaparHTML(
+        partes.join(", ")
+    );
 }
 
 function editarCliente(id) {
     window.location.href =
-        "editar-cliente.html?id=" + encodeURIComponent(id);
+        "editar-cliente.html?id=" +
+        encodeURIComponent(id);
 }
 
-async function excluirCliente(id, nome) {
+async function excluirCliente(
+    id,
+    nome
+) {
     const confirmou = confirm(
         `Deseja realmente excluir o cliente "${nome}"?\n\n` +
         "Essa ação não poderá ser desfeita."
@@ -224,34 +322,31 @@ async function excluirCliente(id, nome) {
     }
 
     try {
-        const resposta = await fetch(
-            "http://localhost:3000/clientes/" + id,
-            {
-                method: "DELETE"
-            }
+        const dados =
+            await window.API.requisicao(
+                "/clientes/" + id,
+                {
+                    method: "DELETE"
+                }
+            );
+
+        alert(
+            dados.mensagem ||
+            "Cliente excluído com sucesso."
         );
 
-        const dados = await resposta.json();
-
-        if (resposta.ok) {
-            alert(
-                dados.mensagem ||
-                "Cliente excluído com sucesso."
-            );
-
-            carregarClientes();
-
-        } else {
-            alert(
-                dados.erro ||
-                "Não foi possível excluir o cliente."
-            );
-        }
+        await carregarClientes();
 
     } catch (erro) {
-        console.log("Erro ao excluir cliente:", erro);
+        console.error(
+            "Erro ao excluir cliente:",
+            erro
+        );
 
-        alert("Erro de conexão com o servidor.");
+        alert(
+            erro.message ||
+            "Não foi possível excluir o cliente."
+        );
     }
 }
 
@@ -263,15 +358,44 @@ function verHistorico(nome) {
 
 function escaparHTML(texto) {
     return String(texto)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 }
 
 function escaparAtributo(texto) {
     return String(texto)
-        .replaceAll("\\", "\\\\")
-        .replaceAll("'", "\\'");
+        .replaceAll(
+            "\\",
+            "\\\\"
+        )
+        .replaceAll(
+            "'",
+            "\\'"
+        )
+        .replaceAll(
+            "\n",
+            " "
+        )
+        .replaceAll(
+            "\r",
+            " "
+        );
 }
