@@ -1,5 +1,3 @@
-const API_URL =
-    "http://localhost:3000";
 
 /* =====================================================
    FORMATAÇÃO
@@ -202,53 +200,21 @@ async function buscarRealizado(
     dataInicio,
     dataFim
 ) {
-    const endereco =
-        `${API_URL}/vendas/resumo-periodo` +
-        `?inicio=${encodeURIComponent(
-            dataInicio
-        )}` +
-        `&fim=${encodeURIComponent(
-            dataFim
-        )}`;
-
-    const resposta =
-        await fetch(
-            endereco
-        );
-
-    const tipoResposta =
-        resposta.headers.get(
-            "content-type"
-        ) || "";
-
-    if (
-        !tipoResposta.includes(
-            "application/json"
-        )
-    ) {
-        const texto =
-            await resposta.text();
-
-        throw new Error(
-            texto ||
-            "O servidor retornou uma resposta inválida."
-        );
-    }
+    const rota =
+        "/vendas/resumo-periodo" +
+        `?inicio=${encodeURIComponent(dataInicio)}` +
+        `&fim=${encodeURIComponent(dataFim)}`;
 
     const dados =
-        await resposta.json();
-
-    if (!resposta.ok) {
-        throw new Error(
-            dados.erro ||
-            "Erro ao buscar as vendas realizadas."
+        await window.API.requisicao(
+            rota
         );
-    }
 
     return {
         realizado:
             Number(
                 dados.totalRealizado ||
+                dados.realizado ||
                 0
             ),
 
