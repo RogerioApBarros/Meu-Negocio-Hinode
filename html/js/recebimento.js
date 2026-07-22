@@ -2,31 +2,36 @@ let clientesCadastrados = [];
 let parcelasEncontradas = [];
 let parcelaSelecionada = null;
 
-window.onload = function () {
-    carregarClientes();
-};
-
-function moeda(valor) {
-    return Number(valor).toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL"
-    });
-}
-
-function formatarData(data) {
-    if (!data) return "";
-
-    let partes = data.split("-");
-    return partes[2] + "/" + partes[1] + "/" + partes[0];
-}
-
 async function carregarClientes() {
+
     try {
-        let resposta = await fetch("http://localhost:3000/clientes");
-        clientesCadastrados = await resposta.json();
+
+        const dados =
+            await window.API.requisicao("/clientes");
+
+        console.log(dados);
+
+        if (Array.isArray(dados)) {
+
+            clientesCadastrados = dados;
+
+        } else if (dados.clientes) {
+
+            clientesCadastrados = dados.clientes;
+
+        } else {
+
+            clientesCadastrados = [];
+        }
+
     } catch (erro) {
-        console.log("Erro ao carregar clientes:", erro);
+
+        console.error(erro);
+
+        alert("Erro ao carregar clientes.");
+
     }
+
 }
 
 function abrirModalClientes() {
@@ -96,12 +101,11 @@ async function buscarParcelas() {
     }
 
     try {
-        let resposta = await fetch(
-            "http://localhost:3000/recebimentos/cliente/" + encodeURIComponent(cliente)
-        );
-
-        let parcelas = await resposta.json();
-
+        let parcelas =
+    await window.API.requisicao(
+        "/recebimentos/cliente/" +
+        encodeURIComponent(cliente)
+    );
         parcelasEncontradas = parcelas;
 
         montarResumoCliente(parcelas);
@@ -349,20 +353,25 @@ async function baixarParcela() {
     }
 
     try {
-        let resposta = await fetch(
-            "http://localhost:3000/recebimentos/" + parcelaSelecionada.id,
+        let dados =
+    await window.API.requisicao(
+        "/recebimentos/" +
+        parcelaSelecionada.id,
             {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    valorRecebido: valorRecebidoAgora,
-                    formaRecebimento: document.getElementById("forma-recebimento").value,
-                    observacao: document.getElementById("observacao").value,
-                    vencimentoRestante: vencimentoRestante
-                })
-            }
+    method:"PUT",
+
+    body:{
+        valorRecebido: valorRecebidoAgora,
+
+        formaRecebimento:
+            document.getElementById("forma-recebimento").value,
+
+        observacao:
+            document.getElementById("observacao").value,
+
+        vencimentoRestante
+    }
+}
         );
 
         let dados = await resposta.json();
