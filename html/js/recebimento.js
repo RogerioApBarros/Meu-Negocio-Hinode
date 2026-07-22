@@ -2,6 +2,27 @@ let clientesCadastrados = [];
 let parcelasEncontradas = [];
 let parcelaSelecionada = null;
 
+document.addEventListener("DOMContentLoaded", carregarClientes);
+
+function moeda(valor) {
+    return Number(valor || 0).toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
+}
+
+function formatarData(data) {
+    if (!data) return "";
+
+    const dataTexto = String(data).split("T")[0];
+    const partes = dataTexto.split("-");
+
+    if (partes.length !== 3) return dataTexto;
+
+    return partes[2] + "/" + partes[1] + "/" + partes[0];
+}
+
+
 async function carregarClientes() {
 
     try {
@@ -15,9 +36,13 @@ async function carregarClientes() {
 
             clientesCadastrados = dados;
 
-        } else if (dados.clientes) {
+        } else if (dados && Array.isArray(dados.clientes)) {
 
             clientesCadastrados = dados.clientes;
+
+        } else if (dados && Array.isArray(dados.dados)) {
+
+            clientesCadastrados = dados.dados;
 
         } else {
 
@@ -106,10 +131,16 @@ async function buscarParcelas() {
         "/recebimentos/cliente/" +
         encodeURIComponent(cliente)
     );
-        parcelasEncontradas = parcelas;
+        parcelasEncontradas = Array.isArray(parcelas)
+            ? parcelas
+            : Array.isArray(parcelas.recebimentos)
+                ? parcelas.recebimentos
+                : Array.isArray(parcelas.dados)
+                    ? parcelas.dados
+                    : [];
 
-        montarResumoCliente(parcelas);
-        listarParcelas(parcelas);
+        montarResumoCliente(parcelasEncontradas);
+        listarParcelas(parcelasEncontradas);
 
     } catch (erro) {
         console.log("Erro ao buscar parcelas:", erro);
@@ -321,19 +352,21 @@ async function baixarParcela() {
         return;
     }
 
-    let valorRecebidoAgora = Number(document.getElementById("valor-recebido").value);
+    let valorRecebidoAgora = Number(
+        document.getElementById("valor-recebido").value
+    );
 
     if (valorRecebidoAgora <= 0) {
         alert("Digite um valor recebido válido.");
         return;
     }
 
-    let saldo =
+    const saldo =
         Number(parcelaSelecionada.valorParcela) -
         Number(parcelaSelecionada.valorRecebido);
 
     if (valorRecebidoAgora > saldo) {
-        let troco = valorRecebidoAgora - saldo;
+        const troco = valorRecebidoAgora - saldo;
 
         alert("Valor maior que a parcela. Troco: " + moeda(troco));
 
@@ -344,69 +377,65 @@ async function baixarParcela() {
     let vencimentoRestante = null;
 
     if (valorRecebidoAgora < saldo) {
-        vencimentoRestante = document.getElementById("vencimento-restante").value;
+        vencimentoRestante = document.getElementById(
+            "vencimento-restante"
+        ).value;
 
-        if (vencimentoRestante === "") {
+        if (!vencimentoRestante) {
             alert("Informe o vencimento do restante.");
             return;
         }
     }
 
     try {
-        let dados =
-    await window.API.requisicao(
-        "/recebimentos/" +
-        parcelaSelecionada.id,
+        const dados = await window.API.requisicao(
+            "/recebimentos/" + parcelaSelecionada.id,
             {
-    method:"PUT",
-
-    body:{
-        valorRecebido: valorRecebidoAgora,
-
-        formaRecebimento:
-            document.getElementById("forma-recebimento").value,
-
-        observacao:
-            document.getElementById("observacao").value,
-
-        vencimentoRestante
-    }
-}
+                method: "PUT",
+                body: {
+                    valorRecebido: valorRecebidoAgora,
+                    formaRecebimento: document.getElementById(
+                        "forma-recebimento"
+                    ).value,
+                    observacao: document.getElementById("observacao").value,
+                    vencimentoRestante: vencimentoRestante
+                }
+            }
         );
 
-        let dados = await resposta.json();
+        alert(
+            dados.mensagem ||
+            "Recebimento registrado com sucesso."
+        );
 
-        if (resposta.ok) {
-            alert(dados.mensagem);
+        document.getElementById("area-recebimento").innerHTML = `
+            <div class="painel-recebimento">
+                <h3>Recebimento registrado</h3>
 
-            document.getElementById("area-recebimento").innerHTML = `
-                <div class="painel-recebimento">
-                    <h3>Recebimento registrado</h3>
+                <p><strong>Cliente:</strong> ${parcelaSelecionada.cliente}</p>
+                <p><strong>Parcela:</strong> ${parcelaSelecionada.numeroParcela}</p>
+                <p><strong>Valor recebido agora:</strong> ${moeda(valorRecebidoAgora)}</p>
 
-                    <p><strong>Cliente:</strong> ${parcelaSelecionada.cliente}</p>
-                    <p><strong>Parcela:</strong> ${parcelaSelecionada.numeroParcela}</p>
-                    <p><strong>Valor recebido agora:</strong> ${moeda(valorRecebidoAgora)}</p>
-
-                    ${
-                        dados.valorRestante
+                ${
+                    dados.valorRestante
                         ? `<p><strong>Nova parcela gerada:</strong> ${moeda(dados.valorRestante)}</p>`
                         : ""
-                    }
+                }
 
-                    <button onclick="buscarParcelas()">
-                        Ver parcelas restantes
-                    </button>
-                </div>
-            `;
+                <button onclick="buscarParcelas()">
+                    Ver parcelas restantes
+                </button>
+            </div>
+        `;
 
-            parcelaSelecionada = null;
-
-        } else {
-            alert(dados.erro || "Erro ao registrar recebimento.");
-        }
+        parcelaSelecionada = null;
 
     } catch (erro) {
-        console.log("Erro ao baixar parcela:", erro);
-        alert("Erro de conexão com o servidor.");
+        console.error("Erro ao baixar parcela:", erro);
+
+        alert(
+            erro.message ||
+            "Erro ao registrar recebimento."
+        );
     }
 }
