@@ -1,5 +1,3 @@
-const API_URL = "http://localhost:3000";
-
 let clientesCadastrados = [];
 let produtosCadastrados = [];
 let itensVenda = [];
@@ -22,6 +20,15 @@ document.addEventListener(
 
 async function inicializarPagina() {
     try {
+        if (
+            !window.API ||
+            typeof window.API.requisicao !== "function"
+        ) {
+            throw new Error(
+                "O serviço da API não foi carregado. Verifique js/services/api.js."
+            );
+        }
+
         registrarEventos();
 
         configurarDataMinimaVencimento();
@@ -586,56 +593,26 @@ async function lerRespostaJSON(
 
 async function carregarClientes() {
     try {
-        const resposta =
-            await fetch(
-                `${API_URL}/clientes`
+        const dados = await window.API.requisicao("/clientes");
+
+        clientesCadastrados = Array.isArray(dados) ? dados : [];
+
+        clientesCadastrados.sort(function (a, b) {
+            return String(a.nome || "").localeCompare(
+                String(b.nome || ""),
+                "pt-BR"
             );
+        });
 
-        const dados =
-            await lerRespostaJSON(
-                resposta
-            );
-
-        if (!resposta.ok) {
-            throw new Error(
-                dados.erro ||
-                "Erro HTTP " +
-                resposta.status
-            );
-        }
-
-        clientesCadastrados =
-            Array.isArray(dados)
-                ? dados
-                : [];
-
-        clientesCadastrados.sort(
-            function (a, b) {
-                return String(
-                    a.nome || ""
-                ).localeCompare(
-                    String(
-                        b.nome || ""
-                    ),
-                    "pt-BR"
-                );
-            }
-        );
-
-        console.log(
-            "Clientes carregados:",
-            clientesCadastrados.length
-        );
+        console.log("Clientes carregados:", clientesCadastrados.length);
 
     } catch (erro) {
-        console.error(
-            "Erro ao carregar clientes:",
-            erro
-        );
+        console.error("Erro ao carregar clientes:", erro);
+        clientesCadastrados = [];
 
         alert(
             "Não foi possível carregar os clientes.\n\n" +
-            erro.message
+            (erro.message || "Erro ao consultar o servidor.")
         );
     }
 }
@@ -646,56 +623,26 @@ async function carregarClientes() {
 
 async function carregarProdutos() {
     try {
-        const resposta =
-            await fetch(
-                `${API_URL}/produtos`
+        const dados = await window.API.requisicao("/produtos");
+
+        produtosCadastrados = Array.isArray(dados) ? dados : [];
+
+        produtosCadastrados.sort(function (a, b) {
+            return String(a.nomeProduto || "").localeCompare(
+                String(b.nomeProduto || ""),
+                "pt-BR"
             );
+        });
 
-        const dados =
-            await lerRespostaJSON(
-                resposta
-            );
-
-        if (!resposta.ok) {
-            throw new Error(
-                dados.erro ||
-                "Erro HTTP " +
-                resposta.status
-            );
-        }
-
-        produtosCadastrados =
-            Array.isArray(dados)
-                ? dados
-                : [];
-
-        produtosCadastrados.sort(
-            function (a, b) {
-                return String(
-                    a.nomeProduto || ""
-                ).localeCompare(
-                    String(
-                        b.nomeProduto || ""
-                    ),
-                    "pt-BR"
-                );
-            }
-        );
-
-        console.log(
-            "Produtos carregados:",
-            produtosCadastrados.length
-        );
+        console.log("Produtos carregados:", produtosCadastrados.length);
 
     } catch (erro) {
-        console.error(
-            "Erro ao carregar produtos:",
-            erro
-        );
+        console.error("Erro ao carregar produtos:", erro);
+        produtosCadastrados = [];
 
         alert(
             "Não foi possível carregar os produtos.\n\n" +
-            erro.message
+            (erro.message || "Erro ao consultar o servidor.")
         );
     }
 }
@@ -2578,78 +2525,38 @@ function montarDadosVenda() {
 ===================================================== */
 
 async function registrarVenda() {
-    const dadosVenda =
-        montarDadosVenda();
+    const dadosVenda = montarDadosVenda();
 
     if (!dadosVenda) {
         return;
     }
 
-    const botao =
-        document.getElementById(
-            "btn-registrar-venda"
-        );
+    const botao = document.getElementById("btn-registrar-venda");
 
     botao.disabled = true;
-
-    botao.textContent =
-        "Registrando...";
+    botao.textContent = "Registrando...";
 
     try {
-        const resposta =
-            await fetch(
-                `${API_URL}/vendas`,
-                {
-                    method:
-                        "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify(
-                            dadosVenda
-                        )
-                }
-            );
-
-        const dados =
-            await lerRespostaJSON(
-                resposta
-            );
-
-        if (!resposta.ok) {
-            throw new Error(
-                dados.erro ||
-                "Erro ao registrar venda."
-            );
-        }
+        const dados = await window.API.requisicao(
+            "/vendas",
+            {
+                method: "POST",
+                body: dadosVenda
+            }
+        );
 
         alert(
             dados.mensagem ||
             "Venda registrada com sucesso!"
         );
 
-        mostrarResumoVenda(
-            dadosVenda,
-            dados
-        );
-
+        mostrarResumoVenda(dadosVenda, dados);
         limparFormulario();
 
-        /*
-         * Recarrega os produtos para atualizar
-         * as quantidades do estoque.
-         */
         await carregarProdutos();
 
     } catch (erro) {
-        console.error(
-            "Erro ao registrar venda:",
-            erro
-        );
+        console.error("Erro ao registrar venda:", erro);
 
         alert(
             erro.message ||
@@ -2657,11 +2564,8 @@ async function registrarVenda() {
         );
 
     } finally {
-        botao.disabled =
-            false;
-
-        botao.textContent =
-            "Registrar Venda";
+        botao.disabled = false;
+        botao.textContent = "Registrar Venda";
     }
 }
 
