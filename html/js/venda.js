@@ -593,26 +593,70 @@ async function lerRespostaJSON(
 
 async function carregarClientes() {
     try {
-        const dados = await window.API.requisicao("/clientes");
-
-        clientesCadastrados = Array.isArray(dados) ? dados : [];
-
-        clientesCadastrados.sort(function (a, b) {
-            return String(a.nome || "").localeCompare(
-                String(b.nome || ""),
-                "pt-BR"
+        const dados =
+            await window.API.requisicao(
+                "/clientes"
             );
-        });
 
-        console.log("Clientes carregados:", clientesCadastrados.length);
+        console.log(
+            "Resposta completa de clientes:",
+            dados
+        );
+
+        if (Array.isArray(dados)) {
+            clientesCadastrados =
+                dados;
+
+        } else if (
+            dados &&
+            Array.isArray(dados.clientes)
+        ) {
+            clientesCadastrados =
+                dados.clientes;
+
+        } else if (
+            dados &&
+            Array.isArray(dados.dados)
+        ) {
+            clientesCadastrados =
+                dados.dados;
+
+        } else {
+            clientesCadastrados = [];
+        }
+
+        clientesCadastrados.sort(
+            function (a, b) {
+                return String(
+                    a.nome || ""
+                ).localeCompare(
+                    String(
+                        b.nome || ""
+                    ),
+                    "pt-BR"
+                );
+            }
+        );
+
+        console.log(
+            "Quantidade de clientes carregados:",
+            clientesCadastrados.length
+        );
 
     } catch (erro) {
-        console.error("Erro ao carregar clientes:", erro);
+        console.error(
+            "Erro ao carregar clientes:",
+            erro
+        );
+
         clientesCadastrados = [];
 
         alert(
             "Não foi possível carregar os clientes.\n\n" +
-            (erro.message || "Erro ao consultar o servidor.")
+            (
+                erro.message ||
+                "Erro ao consultar o servidor."
+            )
         );
     }
 }
@@ -623,30 +667,77 @@ async function carregarClientes() {
 
 async function carregarProdutos() {
     try {
-        const dados = await window.API.requisicao("/produtos");
-
-        produtosCadastrados = Array.isArray(dados) ? dados : [];
-
-        produtosCadastrados.sort(function (a, b) {
-            return String(a.nomeProduto || "").localeCompare(
-                String(b.nomeProduto || ""),
-                "pt-BR"
+        const dados =
+            await window.API.requisicao(
+                "/produtos"
             );
-        });
 
-        console.log("Produtos carregados:", produtosCadastrados.length);
+        console.log(
+            "Resposta completa de produtos:",
+            dados
+        );
+
+        if (Array.isArray(dados)) {
+            produtosCadastrados =
+                dados;
+
+        } else if (
+            dados &&
+            Array.isArray(dados.produtos)
+        ) {
+            produtosCadastrados =
+                dados.produtos;
+
+        } else if (
+            dados &&
+            Array.isArray(dados.dados)
+        ) {
+            produtosCadastrados =
+                dados.dados;
+
+        } else {
+            produtosCadastrados = [];
+        }
+
+        produtosCadastrados.sort(
+            function (a, b) {
+                return String(
+                    a.nomeProduto ||
+                    a.nome ||
+                    ""
+                ).localeCompare(
+                    String(
+                        b.nomeProduto ||
+                        b.nome ||
+                        ""
+                    ),
+                    "pt-BR"
+                );
+            }
+        );
+
+        console.log(
+            "Quantidade de produtos carregados:",
+            produtosCadastrados.length
+        );
 
     } catch (erro) {
-        console.error("Erro ao carregar produtos:", erro);
+        console.error(
+            "Erro ao carregar produtos:",
+            erro
+        );
+
         produtosCadastrados = [];
 
         alert(
             "Não foi possível carregar os produtos.\n\n" +
-            (erro.message || "Erro ao consultar o servidor.")
+            (
+                erro.message ||
+                "Erro ao consultar o servidor."
+            )
         );
     }
 }
-
 /* =====================================================
    MODAL DE CLIENTES
 ===================================================== */
