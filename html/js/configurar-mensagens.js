@@ -1,6 +1,3 @@
-const API_URL =
-    "http://localhost:3000";
-
 let mensagensCadastradas = [];
 
 /* =====================================================
@@ -13,13 +10,35 @@ document.addEventListener(
 );
 
 async function inicializarPagina() {
-    registrarEventos();
+    try {
+        if (
+            !window.API ||
+            typeof window.API.requisicao !== "function"
+        ) {
+            throw new Error(
+                "O serviço da API não foi carregado. Verifique js/services/api.js."
+            );
+        }
 
-    limparFormulario();
+        registrarEventos();
 
-    atualizarPrevia();
+        limparFormulario();
 
-    await carregarMensagens();
+        atualizarPrevia();
+
+        await carregarMensagens();
+
+    } catch (erro) {
+        console.error(
+            "Erro ao inicializar a página:",
+            erro
+        );
+
+        alert(
+            erro.message ||
+            "Não foi possível inicializar a página."
+        );
+    }
 }
 
 function registrarEventos() {
@@ -109,42 +128,19 @@ async function requisicaoJSON(
     endereco,
     opcoes = {}
 ) {
-    const resposta =
-        await fetch(
-            endereco,
-            opcoes
-        );
-
-    const tipo =
-        resposta.headers.get(
-            "content-type"
-        ) || "";
-
     if (
-        !tipo.includes(
-            "application/json"
-        )
+        !window.API ||
+        typeof window.API.requisicao !== "function"
     ) {
-        const texto =
-            await resposta.text();
-
         throw new Error(
-            texto ||
-            "O servidor retornou uma resposta inválida."
+            "O serviço da API não foi carregado."
         );
     }
 
-    const dados =
-        await resposta.json();
-
-    if (!resposta.ok) {
-        throw new Error(
-            dados.erro ||
-            "Erro ao executar a operação."
-        );
-    }
-
-    return dados;
+    return await window.API.requisicao(
+        endereco,
+        opcoes
+    );
 }
 
 function nomeFormaTratamento(
@@ -187,10 +183,25 @@ async function carregarMensagens() {
     `;
 
     try {
-        mensagensCadastradas =
+        const dados =
             await requisicaoJSON(
-                `${API_URL}/mensagens-whatsapp`
+                "/mensagens-whatsapp"
             );
+
+        mensagensCadastradas =
+            Array.isArray(dados)
+                ? dados
+                : (
+                    dados &&
+                    Array.isArray(dados.mensagens)
+                        ? dados.mensagens
+                        : (
+                            dados &&
+                            Array.isArray(dados.dados)
+                                ? dados.dados
+                                : []
+                        )
+                );
 
         renderizarMensagens();
 
@@ -485,7 +496,7 @@ async function salvarMensagem() {
 
     try {
         let endereco =
-            `${API_URL}/mensagens-whatsapp`;
+            `/mensagens-whatsapp`;
 
         let metodo =
             "POST";
@@ -505,15 +516,7 @@ async function salvarMensagem() {
                     method:
                         metodo,
 
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify(
-                            dados
-                        )
+                    body: dados
                 }
             );
 
@@ -861,21 +864,15 @@ async function alterarStatusMensagem(
     try {
         const resposta =
             await requisicaoJSON(
-                `${API_URL}/mensagens-whatsapp/${mensagem.id}/status`,
+                `/mensagens-whatsapp/${mensagem.id}/status`,
                 {
                     method:
                         "PATCH",
 
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-                            ativa:
-                                novoStatus
-                        })
+                    body: {
+                        ativa:
+                            novoStatus
+                    }
                 }
             );
 
@@ -907,7 +904,7 @@ async function excluirMensagem(
     try {
         const resposta =
             await requisicaoJSON(
-                `${API_URL}/mensagens-whatsapp/${mensagem.id}`,
+                `/mensagens-whatsapp/${mensagem.id}`,
                 {
                     method:
                         "DELETE"
