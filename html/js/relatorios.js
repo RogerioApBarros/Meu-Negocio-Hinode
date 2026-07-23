@@ -1,6 +1,3 @@
-const API_URL =
-    "http://localhost:3000";
-
 /* =====================================================
    DADOS DOS RELATÓRIOS
 ===================================================== */
@@ -47,12 +44,34 @@ document.addEventListener(
 );
 
 async function inicializarRelatorios() {
-    registrarEventosDisparo();
+    try {
+        if (
+            !window.API ||
+            typeof window.API.requisicao !== "function"
+        ) {
+            throw new Error(
+                "O serviço da API não foi carregado. Verifique js/services/api.js."
+            );
+        }
 
-    await Promise.all([
-        carregarClientes(),
-        carregarMensagensWhatsapp()
-    ]);
+        registrarEventosDisparo();
+
+        await Promise.all([
+            carregarClientes(),
+            carregarMensagensWhatsapp()
+        ]);
+
+    } catch (erro) {
+        console.error(
+            "Erro ao inicializar relatórios:",
+            erro
+        );
+
+        alert(
+            erro.message ||
+            "Não foi possível inicializar a tela de relatórios."
+        );
+    }
 }
 
 /* =====================================================
@@ -328,42 +347,19 @@ async function buscarJSON(
     endereco,
     opcoes = {}
 ) {
-    const resposta =
-        await fetch(
-            endereco,
-            opcoes
-        );
-
-    const tipo =
-        resposta.headers.get(
-            "content-type"
-        ) || "";
-
     if (
-        !tipo.includes(
-            "application/json"
-        )
+        !window.API ||
+        typeof window.API.requisicao !== "function"
     ) {
-        const texto =
-            await resposta.text();
-
         throw new Error(
-            texto ||
-            "O servidor retornou uma resposta inválida."
+            "O serviço da API não foi carregado."
         );
     }
 
-    const dados =
-        await resposta.json();
-
-    if (!resposta.ok) {
-        throw new Error(
-            dados.erro ||
-            "Erro ao consultar o servidor."
-        );
-    }
-
-    return dados;
+    return await window.API.requisicao(
+        endereco,
+        opcoes
+    );
 }
 
 function validarDatas(
@@ -484,13 +480,23 @@ async function carregarClientes() {
     try {
         const dados =
             await buscarJSON(
-                `${API_URL}/clientes`
+                `/clientes`
             );
 
         clientesCadastrados =
             Array.isArray(dados)
                 ? dados
-                : [];
+                : (
+                    dados &&
+                    Array.isArray(dados.clientes)
+                        ? dados.clientes
+                        : (
+                            dados &&
+                            Array.isArray(dados.dados)
+                                ? dados.dados
+                                : []
+                        )
+                );
 
         clientesCadastrados.sort(
             function (a, b) {
@@ -526,13 +532,23 @@ async function carregarMensagensWhatsapp() {
     try {
         const dados =
             await buscarJSON(
-                `${API_URL}/mensagens-whatsapp/ativas`
+                `/mensagens-whatsapp/ativas`
             );
 
         mensagensWhatsapp =
             Array.isArray(dados)
                 ? dados
-                : [];
+                : (
+                    dados &&
+                    Array.isArray(dados.mensagens)
+                        ? dados.mensagens
+                        : (
+                            dados &&
+                            Array.isArray(dados.dados)
+                                ? dados.dados
+                                : []
+                        )
+                );
 
         preencherSelectMensagens();
 
@@ -798,7 +814,7 @@ async function produtosMaisVendidos() {
     try {
         const dados =
             await buscarJSON(
-                `${API_URL}/relatorios/produtos-mais-vendidos`
+                `/relatorios/produtos-mais-vendidos`
             );
 
         let html = `
@@ -866,7 +882,7 @@ async function clientesMaisCompram() {
     try {
         const dados =
             await buscarJSON(
-                `${API_URL}/relatorios/clientes-mais-compram`
+                `/relatorios/clientes-mais-compram`
             );
 
         let html = `
@@ -934,7 +950,7 @@ async function parcelasEmAtraso() {
     try {
         const dados =
             await buscarJSON(
-                `${API_URL}/relatorios/parcelas-atraso`
+                `/relatorios/parcelas-atraso`
             );
 
         let html = `
@@ -1173,7 +1189,7 @@ async function buscarParcelasPeriodo() {
 
     try {
         const endereco =
-            `${API_URL}/relatorios/parcelas-periodo` +
+            `/relatorios/parcelas-periodo` +
             `?inicio=${encodeURIComponent(
                 inicio
             )}` +
@@ -1364,7 +1380,7 @@ async function buscarParcelasCliente() {
 
     try {
         const endereco =
-            `${API_URL}/relatorios/parcelas-cliente` +
+            `/relatorios/parcelas-cliente` +
             `?cliente=${encodeURIComponent(
                 clienteSelecionado.nome
             )}` +
@@ -3749,7 +3765,7 @@ async function buscarHistoricoCliente() {
 
     try {
         const endereco =
-            `${API_URL}/relatorios/historico-cliente` +
+            `/relatorios/historico-cliente` +
             `?cliente=${encodeURIComponent(
                 clienteSelecionado.nome
             )}`;
@@ -3915,7 +3931,7 @@ async function resumoFinanceiro() {
     try {
         const dados =
             await buscarJSON(
-                `${API_URL}/relatorios/resumo-financeiro`
+                `/relatorios/resumo-financeiro`
             );
 
         document.getElementById(
@@ -4076,7 +4092,7 @@ async function buscarVendasPeriodo() {
 
     try {
         const endereco =
-            `${API_URL}/relatorios/vendas-periodo` +
+            `/relatorios/vendas-periodo` +
             `?inicio=${encodeURIComponent(
                 inicio
             )}` +
@@ -4212,7 +4228,7 @@ async function buscarVendasClientePeriodo() {
 
     try {
         const endereco =
-            `${API_URL}/relatorios/vendas-cliente-periodo` +
+            `/relatorios/vendas-cliente-periodo` +
             `?cliente=${encodeURIComponent(
                 clienteSelecionado.nome
             )}` +
@@ -4438,7 +4454,7 @@ async function buscarRecebimentosPeriodo() {
 
     try {
         const endereco =
-            `${API_URL}/relatorios/recebimentos-periodo` +
+            `/relatorios/recebimentos-periodo` +
             `?inicio=${encodeURIComponent(
                 inicio
             )}` +
