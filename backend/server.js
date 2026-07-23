@@ -52,6 +52,10 @@ require(
     "./models/usuariosModel"
 );
 
+require(
+    "./models/empresasModel"
+);
+
 /* =====================================================
    ROTAS
 ===================================================== */
@@ -90,6 +94,10 @@ const mensagensWhatsappRoutes = require(
 
 const usuariosRoutes = require(
     "./routes/usuariosRoutes"
+);
+
+const empresasRoutes = require(
+    "./routes/empresasRoutes"
 );
 
 /* =====================================================
@@ -354,6 +362,11 @@ app.use(
 app.use(
     "/usuarios",
     usuariosRoutes
+);
+
+app.use(
+    "/empresas",
+    empresasRoutes
 );
 
 /* =====================================================
