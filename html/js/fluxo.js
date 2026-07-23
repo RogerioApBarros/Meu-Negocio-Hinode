@@ -1,54 +1,99 @@
-window.onload = function () {
-    carregarFluxo();
-};
+document.addEventListener(
+    "DOMContentLoaded",
+    carregarFluxo
+);
 
 function moeda(valor) {
-    return Number(valor).toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL"
-    });
+    return Number(
+        valor || 0
+    ).toLocaleString(
+        "pt-BR",
+        {
+            style: "currency",
+            currency: "BRL"
+        }
+    );
 }
 
 async function carregarFluxo() {
-
     try {
+        if (
+            !window.API ||
+            typeof window.API.requisicao !== "function"
+        ) {
+            throw new Error(
+                "O serviço da API não foi carregado."
+            );
+        }
 
-        let resposta = await fetch("http://localhost:3000/fluxo");
+        const dados =
+            await window.API.requisicao(
+                "/fluxo"
+            );
 
-        let dados = await resposta.json();
+        console.log(
+            "Dados do fluxo recebidos:",
+            dados
+        );
 
-        console.log("Dados recebidos:");
-        console.log(dados);
+        document.getElementById(
+            "total-vendido"
+        ).textContent =
+            moeda(
+                dados.totalVendido
+            );
 
-        document.getElementById("total-vendido").innerHTML =
-            moeda(dados.totalVendido);
+        document.getElementById(
+            "total-recebido"
+        ).textContent =
+            moeda(
+                dados.totalRecebido
+            );
 
-        document.getElementById("total-recebido").innerHTML =
-            moeda(dados.totalRecebido);
+        document.getElementById(
+            "total-aberto"
+        ).textContent =
+            moeda(
+                dados.totalAberto
+            );
 
-        document.getElementById("total-aberto").innerHTML =
-            moeda(dados.totalAberto);
+        document.getElementById(
+            "total-vencido"
+        ).textContent =
+            moeda(
+                dados.totalVencido
+            );
 
-        document.getElementById("total-vencido").innerHTML =
-            moeda(dados.totalVencido);
+        document.getElementById(
+            "estoque-custo"
+        ).textContent =
+            moeda(
+                dados.estoqueCusto
+            );
 
-        document.getElementById("estoque-custo").innerHTML =
-            moeda(dados.estoqueCusto);
+        document.getElementById(
+            "estoque-venda"
+        ).textContent =
+            moeda(
+                dados.estoqueVenda
+            );
 
-        document.getElementById("estoque-venda").innerHTML =
-            moeda(dados.estoqueVenda);
+        document.getElementById(
+            "lucro-previsto"
+        ).textContent =
+            moeda(
+                dados.lucroBrutoPrevisto
+            );
 
-        document.getElementById("lucro-previsto").innerHTML =
-            moeda(dados.lucroBrutoPrevisto);
+    } catch (erro) {
+        console.error(
+            "Erro ao carregar fluxo:",
+            erro
+        );
 
+        alert(
+            erro.message ||
+            "Erro ao carregar fluxo financeiro."
+        );
     }
-    catch (erro) {
-
-        console.log("Erro ao carregar fluxo:");
-        console.log(erro);
-
-        alert("Erro ao carregar fluxo financeiro.");
-
-    }
-
 }
