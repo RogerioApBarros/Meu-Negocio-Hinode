@@ -1,6 +1,9 @@
 const adicionarEmpresaIdUsuarios = require(
     "./database/migracaoAdicionarEmpresaId"
 );
+const criarEmpresaInicial = require(
+    "./database/migracaoEmpresaInicial"
+);
 
 require("dotenv").config();
 
@@ -520,6 +523,7 @@ async function iniciarServidor() {
             "Tabelas sincronizadas!"
         );
         await adicionarEmpresaIdUsuarios();
+        await criarEmpresaInicial();
 
 console.log(
     "Migração empresaId concluída!"
