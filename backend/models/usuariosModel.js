@@ -10,6 +10,17 @@ const Usuario = sequelize.define(
             primaryKey: true
         },
 
+        empresaId: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            references: {
+                model: "empresas",
+                key: "id"
+            },
+            onUpdate: "CASCADE",
+            onDelete: "RESTRICT"
+        },
+
         nome: {
             type: DataTypes.STRING(120),
             allowNull: false,
@@ -77,7 +88,6 @@ const Usuario = sequelize.define(
     },
     {
         tableName: "usuarios",
-
         timestamps: true,
 
         indexes: [
@@ -88,6 +98,9 @@ const Usuario = sequelize.define(
             {
                 unique: true,
                 fields: ["login"]
+            },
+            {
+                fields: ["empresaId"]
             },
             {
                 fields: ["ativo"]

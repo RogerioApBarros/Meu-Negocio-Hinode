@@ -53,11 +53,20 @@ function autenticar(req, res, next) {
 
         req.usuario = {
             id: dadosToken.id,
+            empresaId: dadosToken.empresaId,
             nome: dadosToken.nome,
             email: dadosToken.email,
             login: dadosToken.login,
             perfil: dadosToken.perfil
         };
+
+        if (!req.usuario.empresaId) {
+            return res.status(401).json({
+                sucesso: false,
+                mensagem:
+                    "Usuário não está vinculado a uma empresa. Faça login novamente."
+            });
+        }
 
         return next();
     } catch (erro) {
@@ -72,7 +81,8 @@ function autenticar(req, res, next) {
         if (erro.name === "JsonWebTokenError") {
             return res.status(401).json({
                 sucesso: false,
-                mensagem: "Token de acesso inválido."
+                mensagem:
+                    "Token de acesso inválido."
             });
         }
 
@@ -83,7 +93,8 @@ function autenticar(req, res, next) {
 
         return res.status(500).json({
             sucesso: false,
-            mensagem: "Erro interno de autenticação."
+            mensagem:
+                "Erro interno de autenticação."
         });
     }
 }
@@ -93,7 +104,8 @@ function permitirPerfis(...perfisPermitidos) {
         if (!req.usuario) {
             return res.status(401).json({
                 sucesso: false,
-                mensagem: "Usuário não autenticado."
+                mensagem:
+                    "Usuário não autenticado."
             });
         }
 
