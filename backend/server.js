@@ -20,14 +20,6 @@ const sequelize = require(
     "./database/conexao"
 );
 
-const configurarAssociacoes = require(
-    "./database/associacoes"
-);
-
-const executarMigracaoMultiempresa = require(
-    "./database/migracaoMultiempresa"
-);
-
 /* =====================================================
    MODELS
 ===================================================== */
@@ -63,12 +55,6 @@ require(
 require(
     "./models/empresasModel"
 );
-
-/*
- * Configura os relacionamentos entre os models
- * antes da sincronização do banco.
- */
-configurarAssociacoes();
 
 /* =====================================================
    ROTAS
@@ -528,16 +514,6 @@ async function iniciarServidor() {
 
         console.log(
             "Tabelas sincronizadas!"
-        );
-
-        /*
-         * Migração temporária da etapa multiempresa.
-         * É segura para executar mais de uma vez.
-         */
-        await executarMigracaoMultiempresa();
-
-        console.log(
-            "Migração multiempresa verificada!"
         );
 
         app.listen(

@@ -104,7 +104,6 @@ const Empresa = sequelize.define(
     {
         tableName: "empresas",
         timestamps: true,
-
         indexes: [
             {
                 fields: ["nome"]
